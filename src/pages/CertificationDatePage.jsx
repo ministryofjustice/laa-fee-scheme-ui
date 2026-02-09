@@ -1,0 +1,100 @@
+import { useNavigate } from "react-router-dom";
+const CertificationDatePage = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="govuk-width-container">
+      <main className="govuk-main-wrapper">
+        <h1 className="govuk-heading-xl">Certification Date</h1>
+
+        <div className="govuk-form-group">
+          <fieldset
+            className="govuk-fieldset"
+            role="group"
+            aria-describedby="cerification-date-hint"
+          >
+            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 className="govuk-fieldset__heading">
+                What is the certification date?
+              </h1>
+            </legend>
+            <div id="cerification-date-hint" className="govuk-hint">
+              For example, 27 3 2007
+            </div>
+            <div className="govuk-date-input" id="cerification-date">
+              <div className="govuk-date-input__item">
+                <div className="govuk-form-group">
+                  <label
+                    className="govuk-label govuk-date-input__label"
+                    htmlFor="cerification-date-day"
+                  >
+                    Day
+                  </label>
+                  <input
+                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                    id="cerification-date-day"
+                    name="cerification-date-day"
+                    type="text"
+                    inputmode="numeric"
+                  />
+                </div>
+              </div>
+              <div className="govuk-date-input__item">
+                <div className="govuk-form-group">
+                  <label
+                    className="govuk-label govuk-date-input__label"
+                    htmlFor="cerification-date-month"
+                  >
+                    Month
+                  </label>
+                  <input
+                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                    id="cerification-date-month"
+                    name="cerification-date-month"
+                    type="text"
+                    inputmode="numeric"
+                  />
+                </div>
+              </div>
+              <div className="govuk-date-input__item">
+                <div className="govuk-form-group">
+                  <label
+                    className="govuk-label govuk-date-input__label"
+                    htmlFor="cerification-date-year"
+                  >
+                    Year
+                  </label>
+                  <input
+                    className="govuk-input govuk-date-input__input govuk-input--width-4"
+                    id="cerification-date-year"
+                    name="cerification-date-year"
+                    type="text"
+                    inputmode="numeric"
+                  />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="govuk-button-group">
+          <button
+            className="govuk-button"
+            data-module="govuk-button"
+            onClick={() => navigate("/provider-location")}
+          >
+            Continue
+          </button>
+          <button
+            className="govuk-button govuk-button--secondary"
+            data-module="govuk-button"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default CertificationDatePage;
