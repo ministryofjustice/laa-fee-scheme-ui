@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import NavButton from "../components/NavButton";
+import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const ProviderLocationDatePage = () => {
+const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
   const [feeType, setFeeType] = useState("");
 
-  const providerLocationOptions = [
+  const options = [
     {
       value: "profitCostsBelow",
       label: "Profit costs < 3x Fixed Fee",
@@ -31,57 +33,36 @@ const ProviderLocationDatePage = () => {
   };
 
   const handleContinue = () => {
-    const selectedOption = providerLocationOptions.find(
+    const selectedOption = options.find(
       (option) => option.value === selectedRadio,
     );
-    const [selectedValue, feeType] = selectedOption;
+
+    const { value: selectedValue, feeType } = selectedOption;
 
     setFeeType(feeType);
 
     if (selectedValue === "profitCostsBelow") {
       navigate("/bill-type");
     } else {
-      navigate("/calculate-hourly-rates");
+      navigate("/calculate-fees");
     }
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">Provider Location</h1>
+        <h1 className="govuk-heading-xl">
+          Private Family Law Representation Scheme (PFLRS)
+        </h1>
 
-        <div className="govuk-form-group">
-          <fieldset className="govuk-fieldset">
-            <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 className="govuk-fieldset__heading">
-                Select provider location
-              </h1>
-            </legend>
-            <div className="govuk-radios" data-module="govuk-radios">
-              {providerLocationOptions
-                .filter((option) => option.value !== "")
-                .map((option) => (
-                  <div key={option.value} className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id={option.value}
-                      name="providerLocations"
-                      type="radio"
-                      value={option.value}
-                      checked={selectedRadio === option.value}
-                      onChange={handleRadioChange}
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor={option.value}
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-            </div>
-          </fieldset>
-        </div>
+        <RadioButtonsPanel
+          name="feeType"
+          heading="Select fee type"
+          options={options}
+          selectedRadio={selectedRadio}
+          handleRadioChange={handleRadioChange}
+        />
+
         <div className="govuk-button-group">
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
@@ -93,4 +74,4 @@ const ProviderLocationDatePage = () => {
   );
 };
 
-export default ProviderLocationDatePage;
+export default PrivateFamilyLawRepresentationFeeTypePage;

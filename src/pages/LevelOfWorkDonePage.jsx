@@ -4,19 +4,19 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const ProviderLocationDatePage = () => {
+const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "london",
-      label: "London",
+      value: "legalHelp",
+      label: "Legal Help (higher)",
     },
     {
-      value: "nonLondon",
-      label: "Non-London",
+      value: "legalRep",
+      label: "Legal Representation",
     },
   ];
 
@@ -25,7 +25,7 @@ const ProviderLocationDatePage = () => {
   };
 
   const handleContinue = () => {
-    navigate("/private-family-law-representation-fee-type");
+    navigate("/calculate-fees");
   };
 
   return (
@@ -36,8 +36,8 @@ const ProviderLocationDatePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="providerLocation"
-          heading="Select provider location"
+          name="levelOfWork"
+          heading="Select level of work done"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
@@ -54,4 +54,4 @@ const ProviderLocationDatePage = () => {
   );
 };
 
-export default ProviderLocationDatePage;
+export default LevelOfWorkDonePage;

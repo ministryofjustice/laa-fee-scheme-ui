@@ -4,19 +4,31 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const ProviderLocationDatePage = () => {
+const CourtTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "london",
-      label: "London",
+      value: "lawJusticeMagsCourt",
+      label: "Law Justice or Magistrates Court",
     },
     {
-      value: "nonLondon",
-      label: "Non-London",
+      value: "districtJudgeCountyCourt",
+      label: "District Judge or Country Court",
+    },
+    {
+      value: "highCourt",
+      label: "High Court",
+    },
+    {
+      value: "circuitDistrictCostsJudge",
+      label: "District Judge / District Judge / Costs Judge",
+    },
+    {
+      value: "other",
+      label: "Other",
     },
   ];
 
@@ -25,7 +37,7 @@ const ProviderLocationDatePage = () => {
   };
 
   const handleContinue = () => {
-    navigate("/private-family-law-representation-fee-type");
+    navigate("/level-of-work-done");
   };
 
   return (
@@ -36,11 +48,12 @@ const ProviderLocationDatePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="providerLocation"
-          heading="Select provider location"
+          name="courtType"
+          heading="Select court type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
+          handleContinue={handleContinue}
         />
 
         <div className="govuk-button-group">
@@ -54,4 +67,4 @@ const ProviderLocationDatePage = () => {
   );
 };
 
-export default ProviderLocationDatePage;
+export default CourtTypePage;

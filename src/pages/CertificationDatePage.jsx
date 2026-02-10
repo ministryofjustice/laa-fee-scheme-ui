@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import NavButton from "../components/NavButton";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const CertificationDatePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">Certification Date</h1>
+        <h1 className="govuk-heading-xl">Private Family Law Representation Scheme (PFLRS)</h1>
 
         <div className="govuk-form-group">
           <fieldset
@@ -75,7 +76,7 @@ const CertificationDatePage = () => {
                     id="cerification-date-year"
                     name="cerification-date-year"
                     type="text"
-                    inputmode="numeric"
+                    inputMode="numeric"
                   />
                 </div>
               </div>

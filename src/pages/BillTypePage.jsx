@@ -4,19 +4,19 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const ProviderLocationDatePage = () => {
+const BillTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "london",
-      label: "London",
+      value: "finalBill",
+      label: "Final Bill",
     },
     {
-      value: "nonLondon",
-      label: "Non-London",
+      value: "transfer",
+      label: "Transfer",
     },
   ];
 
@@ -25,7 +25,7 @@ const ProviderLocationDatePage = () => {
   };
 
   const handleContinue = () => {
-    navigate("/private-family-law-representation-fee-type");
+    navigate("/court-type");
   };
 
   return (
@@ -36,11 +36,12 @@ const ProviderLocationDatePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="providerLocation"
-          heading="Select provider location"
+          name="billType"
+          heading="Select bill type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
+          handleContinue={handleContinue}
         />
 
         <div className="govuk-button-group">
@@ -54,4 +55,4 @@ const ProviderLocationDatePage = () => {
   );
 };
 
-export default ProviderLocationDatePage;
+export default BillTypePage;
