@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton";
+import NavButton from "../components/NavButton";
 
 const PrivateFamilyLawRepresentationSchemePage = () => {
   const navigate = useNavigate();
@@ -78,21 +80,13 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </div>
 
         <div className="govuk-button-group">
-          <button
-            className="govuk-button"
-            data-module="govuk-button"
+          <NavButton
             onClick={handleContinue}
             disabled={!selectedRadio}
           >
-            Next
-          </button>
-          <button
-            className="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            onClick={() => navigate(-1)}
-          >
-            Back
-          </button>
+            Continue
+          </NavButton>
+          <BackButton />
         </div>
       </main>
     </div>
