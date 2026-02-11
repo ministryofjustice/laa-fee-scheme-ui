@@ -15,9 +15,13 @@ import CalculateFeesPage from "../pages/CalculateFeesPage";
 import BillTypePage from "../pages/BillTypePage";
 import CourtTypePage from "../pages/CourtTypePage";
 import LevelOfWorkDonePage from "../pages/LevelOfWorkDonePage";
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const AppRoutes = () => {
   return (
+    <>
+    <Header />
     <Routes>
       <Route path="/" element={<AdvocateClaimOverview />} />
       <Route path="/fee-schemes" element={<FeeSchemes />} />
@@ -36,6 +40,8 @@ const AppRoutes = () => {
       <Route path="/level-of-work-done" element={<LevelOfWorkDonePage />} />
       <Route path="/process-complete" element={<ProcessCompletePage />} />
     </Routes>
+    <Footer />
+    </>
   );
 };
 
