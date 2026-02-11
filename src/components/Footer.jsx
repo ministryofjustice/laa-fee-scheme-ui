@@ -47,7 +47,7 @@ const Footer = () => {
                 All content is available under the
                 <a
                   className="govuk-footer__link"
-                  href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                  href=""
                   rel="license"
                 >
                   Open Government Licence v3.0
@@ -58,7 +58,7 @@ const Footer = () => {
             <div className="govuk-footer__meta-item">
               <a
                 className="govuk-footer__link govuk-footer__copyright-logo"
-                href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+                href=""
               >
                 © Crown copyright
               </a>
