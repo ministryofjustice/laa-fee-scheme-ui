@@ -4,27 +4,27 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const PrivateFamilyLawRepresentationSchemePage = () => {
+const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
+  const [feeType, setFeeType] = useState("");
 
   const options = [
     {
-      value: "children",
-      label: "Children",
+      value: "profitCostsBelow",
+      label: "Profit costs < 3x Fixed Fee",
+      feeType: "fixed",
     },
     {
-      value: "finance",
-      label: "Finance",
+      value: "profitCostsAbove",
+      label: "Profit costs > 3x Fixed Fee",
+      feeType: "hourlyRate",
     },
     {
-      value: "domesticAbuse",
-      label: "Domestic Abuse",
-    },
-    {
-      value: "excluded",
-      label: "Excluded from PFLRS",
+      value: "solicitorInstructed",
+      label: "Solicitor instructed for < 24 hours",
+      feeType: "hourlyRate",
     },
   ];
 
@@ -33,10 +33,18 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRadio === "excluded") {
-      navigate("/process-complete");
+    const selectedOption = options.find(
+      (option) => option.value === selectedRadio,
+    );
+
+    const { value: selectedValue, feeType } = selectedOption;
+
+    setFeeType(feeType);
+
+    if (selectedValue === "profitCostsBelow") {
+      navigate("/bill-type");
     } else {
-      navigate("/certification-date");
+      navigate("/calculate-fees");
     }
   };
 
@@ -48,8 +56,8 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="proceedingsType"
-          heading="Select proceedings type"
+          name="feeType"
+          heading="Select fee type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
@@ -66,4 +74,4 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   );
 };
 
-export default PrivateFamilyLawRepresentationSchemePage;
+export default PrivateFamilyLawRepresentationFeeTypePage;

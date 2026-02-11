@@ -4,27 +4,19 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const PrivateFamilyLawRepresentationSchemePage = () => {
+const BillTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "children",
-      label: "Children",
+      value: "finalBill",
+      label: "Final Bill",
     },
     {
-      value: "finance",
-      label: "Finance",
-    },
-    {
-      value: "domesticAbuse",
-      label: "Domestic Abuse",
-    },
-    {
-      value: "excluded",
-      label: "Excluded from PFLRS",
+      value: "transfer",
+      label: "Transfer",
     },
   ];
 
@@ -33,11 +25,7 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRadio === "excluded") {
-      navigate("/process-complete");
-    } else {
-      navigate("/certification-date");
-    }
+    navigate("/court-type");
   };
 
   return (
@@ -48,11 +36,12 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="proceedingsType"
-          heading="Select proceedings type"
+          name="billType"
+          heading="Select bill type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
+          handleContinue={handleContinue}
         />
 
         <div className="govuk-button-group">
@@ -66,4 +55,4 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   );
 };
 
-export default PrivateFamilyLawRepresentationSchemePage;
+export default BillTypePage;

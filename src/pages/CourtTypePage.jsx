@@ -4,27 +4,31 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const PrivateFamilyLawRepresentationSchemePage = () => {
+const CourtTypePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "children",
-      label: "Children",
+      value: "lawJusticeMagsCourt",
+      label: "Law Justice or Magistrates Court",
     },
     {
-      value: "finance",
-      label: "Finance",
+      value: "districtJudgeCountyCourt",
+      label: "District Judge or Country Court",
     },
     {
-      value: "domesticAbuse",
-      label: "Domestic Abuse",
+      value: "highCourt",
+      label: "High Court",
     },
     {
-      value: "excluded",
-      label: "Excluded from PFLRS",
+      value: "circuitDistrictCostsJudge",
+      label: "District Judge / District Judge / Costs Judge",
+    },
+    {
+      value: "other",
+      label: "Other",
     },
   ];
 
@@ -33,11 +37,7 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRadio === "excluded") {
-      navigate("/process-complete");
-    } else {
-      navigate("/certification-date");
-    }
+    navigate("/level-of-work-done");
   };
 
   return (
@@ -48,11 +48,12 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="proceedingsType"
-          heading="Select proceedings type"
+          name="courtType"
+          heading="Select court type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
+          handleContinue={handleContinue}
         />
 
         <div className="govuk-button-group">
@@ -66,4 +67,4 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   );
 };
 
-export default PrivateFamilyLawRepresentationSchemePage;
+export default CourtTypePage;

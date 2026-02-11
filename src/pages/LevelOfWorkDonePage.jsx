@@ -4,27 +4,19 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const PrivateFamilyLawRepresentationSchemePage = () => {
+const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "children",
-      label: "Children",
+      value: "legalHelp",
+      label: "Legal Help (higher)",
     },
     {
-      value: "finance",
-      label: "Finance",
-    },
-    {
-      value: "domesticAbuse",
-      label: "Domestic Abuse",
-    },
-    {
-      value: "excluded",
-      label: "Excluded from PFLRS",
+      value: "legalRep",
+      label: "Legal Representation",
     },
   ];
 
@@ -33,11 +25,7 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRadio === "excluded") {
-      navigate("/process-complete");
-    } else {
-      navigate("/certification-date");
-    }
+    navigate("/calculate-fees");
   };
 
   return (
@@ -48,8 +36,8 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="proceedingsType"
-          heading="Select proceedings type"
+          name="levelOfWork"
+          heading="Select level of work done"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
@@ -66,4 +54,4 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   );
 };
 
-export default PrivateFamilyLawRepresentationSchemePage;
+export default LevelOfWorkDonePage;

@@ -4,27 +4,19 @@ import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
-const PrivateFamilyLawRepresentationSchemePage = () => {
+const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
   const options = [
     {
-      value: "children",
-      label: "Children",
+      value: "london",
+      label: "London",
     },
     {
-      value: "finance",
-      label: "Finance",
-    },
-    {
-      value: "domesticAbuse",
-      label: "Domestic Abuse",
-    },
-    {
-      value: "excluded",
-      label: "Excluded from PFLRS",
+      value: "nonLondon",
+      label: "Non-London",
     },
   ];
 
@@ -33,11 +25,7 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRadio === "excluded") {
-      navigate("/process-complete");
-    } else {
-      navigate("/certification-date");
-    }
+    navigate("/private-family-law-representation-fee-type");
   };
 
   return (
@@ -48,8 +36,8 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
         </h1>
 
         <RadioButtonsPanel
-          name="proceedingsType"
-          heading="Select proceedings type"
+          name="providerLocation"
+          heading="Select provider location"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
@@ -66,4 +54,4 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   );
 };
 
-export default PrivateFamilyLawRepresentationSchemePage;
+export default ProviderLocationDatePage;
