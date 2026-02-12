@@ -4,7 +4,7 @@ import FeeSchemes from '../pages/FeeSchemes';
 import FamilyAdvocacySchemePage from '../pages/FamilyAdvocacySchemePage';
 import PrivateFamilyLawRepresentationSchemePage from '../pages/PrivateFamilyLawRepresentationSchemePage';
 import PrivateFamilyLawRepresentationFeeTypePage from '../pages/PrivateFamilyLawRepresentationFeeTypePage';
-import CareProceedingsGraduatedFeeSchemePage from '../pages/CareProceedingsGraduatedFeeSchemePage';
+import CareProceedingsGraduatedFeeSchemePage from '../pages/care-proceedings-graduated-fee-scheme/CareProceedingsGraduatedFeeSchemePage';
 import ProceedingTypes from '../pages/ProceedingTypes';
 import AdvocatesMeetingsPage from '../pages/advocates-meetings/AdvocatesMeetingsPage';
 import Hearing from '../pages/Hearing';
@@ -17,6 +17,9 @@ import CourtTypePage from "../pages/CourtTypePage";
 import LevelOfWorkDonePage from "../pages/LevelOfWorkDonePage";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import FeeSchemeFgfCounselAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFgfCounselAdvocacy';
+import FeeSchemeFasAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFasAdvocacy';
+import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts';
 
 const AppRoutes = () => {
   return (
@@ -39,6 +42,9 @@ const AppRoutes = () => {
       <Route path="/court-type" element={<CourtTypePage />} />
       <Route path="/level-of-work-done" element={<LevelOfWorkDonePage />} />
       <Route path="/process-complete" element={<ProcessCompletePage />} />
+      <Route path="/fee-scheme-fgf-counsel-advocacy" element={<FeeSchemeFgfCounselAdvocacy />} />
+      <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
+      <Route path="/profit-costs" element={<ProfitCosts />} />
     </Routes>
     <Footer />
     </>
