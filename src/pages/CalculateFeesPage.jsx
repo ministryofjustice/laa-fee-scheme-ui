@@ -16,8 +16,8 @@ const CalculateHourlyRatesPage = () => {
         <h2 className="govuk-heading-l">Calculate Fees</h2>
         <p className="govuk-body">Click on continue to calculate fees</p>
         <div className="govuk-button-group">
-          <NavButton onClick={handleContinue}>Continue</NavButton>
           <BackButton />
+          <NavButton onClick={handleContinue}>Continue</NavButton>
         </div>
       </main>
     </div>

@@ -44,10 +44,10 @@ const Footer = () => {
                 />
               </svg>
               <span className="govuk-footer__licence-description">
-                All content is available under the
+                All content is available under the{" "}
                 <a
                   className="govuk-footer__link"
-                  href=""
+                  href="/"
                   rel="license"
                 >
                   Open Government Licence v3.0

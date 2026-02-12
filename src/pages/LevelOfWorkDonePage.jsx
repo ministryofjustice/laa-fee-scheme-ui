@@ -24,7 +24,28 @@ const LevelOfWorkDonePage = () => {
     setSelectedRadio(e.target.value);
   };
 
+  const applyEarlyResolutionSettlementFee = () => {
+    console.log("Apply bolt-on Early Resolution/Settlement Fee");
+  };
+
+  const applyEnforcementProceedingsFee = () => {
+    console.log("Apply bolt-on Enforcement Proceedings Fee");
+  };
+
   const handleContinue = () => {
+    // if finance and resolution at first app OR
+    // Financial Dispute Resolution (FDR) hearing
+    const isEarlyResolutionSettlement = false;
+    if (isEarlyResolutionSettlement) {
+      applyEarlyResolutionSettlementFee();
+    }
+
+    // if returned to court after final hearing for enforcement proceedings fee
+    const isEnforcementProceeding = false;
+    if (isEnforcementProceeding) {
+      applyEnforcementProceedingsFee();
+    }
+
     navigate("/calculate-fees");
   };
 
@@ -44,10 +65,10 @@ const LevelOfWorkDonePage = () => {
         />
 
         <div className="govuk-button-group">
+          <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-          <BackButton />
         </div>
       </main>
     </div>
