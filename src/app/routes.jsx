@@ -20,6 +20,8 @@ import Footer from '../components/Footer';
 import FeeSchemeFgfCounselAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFgfCounselAdvocacy';
 import FeeSchemeFasAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFasAdvocacy';
 import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts';
+import PersonRepresented from '../pages/care-proceedings-graduated-fee-scheme/PersonRepresented';
+
 
 const AppRoutes = () => {
   return (
@@ -45,6 +47,7 @@ const AppRoutes = () => {
       <Route path="/fee-scheme-fgf-counsel-advocacy" element={<FeeSchemeFgfCounselAdvocacy />} />
       <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
       <Route path="/profit-costs" element={<ProfitCosts />} />
+      <Route path="/person-represented" element={<PersonRepresented />} />
     </Routes>
     <Footer />
     </>

@@ -124,22 +124,24 @@ const CareProceedingsGraduatedFeeSchemePage = () => {
                     </fieldset>
                 </div>
 
-                <button
-                    className="govuk-button govuk-button--secondary"
-                    data-module="govuk-button"
-                    onClick={() => navigate(-1)}
-                >
-                    Back
-                </button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                    <button
+                        className="govuk-button govuk-button--secondary"
+                        data-module="govuk-button"
+                        onClick={() => navigate(-1)}
+                    >
+                        Back
+                    </button>
 
-                <button
-                    className="govuk-button"
-                    data-module="govuk-button"
-                    onClick={handleContinue}
-                    disabled={!day || !month || !year}
-                >
-                    Continue
-                </button>
+                    <button
+                        className="govuk-button"
+                        data-module="govuk-button"
+                        onClick={handleContinue}
+                        disabled={!day || !month || !year}
+                    >
+                        Continue
+                    </button>
+                </div>
             </main>
         </div>
     );
