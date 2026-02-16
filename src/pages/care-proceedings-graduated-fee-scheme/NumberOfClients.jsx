@@ -1,42 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import RadioButtonsPanel from "../../components/RadioButtonsPanel";
 import React, {useState} from "react";
 
-const PersonRepresented = () => {
+const NumberOfClients = () => {
     const navigate = useNavigate();
-    const [selectedRadio, setSelectedRadio] = useState("");
-    const [numberOfPersons, setNumberOfPersons] = useState("");
-
-    const handleContinue = () => {
-        navigate('/court-type', {
-            state: {
-                title: "Care Proceedings Graduated Fee Scheme (CPGFS)",
-                nextPath: "/number-of-clients"
-            }
-        });
-    };
-
-    const options = [
-        {
-            value: "Children",
-            label: "Children",
-        },
-        {
-            value: "ParentParentalResponsibility",
-            label: "Parents and those with parental responsibility (including grandparents who have PR)",
-        },
-        {
-            value: "JoinedParties",
-            label: "Joined parties",
-        }
-    ];
-
-    const handleRadioChange = (e) => {
-        setSelectedRadio(e.target.value);
-    };
+    const [numberOfClients, setNumberOfClients] = useState("");
 
     const handleNumberChange = (e) => {
-        setNumberOfPersons(e.target.value);
+        setNumberOfClients(e.target.value);
+    };
+
+    const handleContinue = () => {
+        navigate('/consider-provider-region');
     };
 
     return (
@@ -44,21 +18,13 @@ const PersonRepresented = () => {
             <main className="govuk-main-wrapper">
                 <h1 className="govuk-heading-xl">Care Proceedings Graduated Fee Scheme (CPGFS)</h1>
 
-                <RadioButtonsPanel
-                    name="representationType"
-                    heading="Select person represented"
-                    options={options}
-                    selectedRadio={selectedRadio}
-                    handleRadioChange={handleRadioChange}
-                />
-
                 <div id="width-20" className="govuk-form-group">
                     <label
                         htmlFor="width-20-input"
                         className="govuk-heading-s"
                         aria-hidden="false"
                     >
-                        Number of persons represented
+                        Number of clients
                     </label>
                     <input
                         id="width-20-input"
@@ -66,7 +32,7 @@ const PersonRepresented = () => {
                         style={{ maxWidth: '22.86ex' }}
                         type="number"
                         name="width-20"
-                        value={numberOfPersons}
+                        value={numberOfClients}
                         onChange={handleNumberChange}
                     />
                 </div>
@@ -84,7 +50,7 @@ const PersonRepresented = () => {
                         className="govuk-button"
                         data-module="govuk-button"
                         onClick={handleContinue}
-                        disabled={!selectedRadio || !numberOfPersons}
+                        disabled={!numberOfClients}
                     >
                         Continue
                     </button>
@@ -94,4 +60,4 @@ const PersonRepresented = () => {
     );
 };
 
-export default PersonRepresented;
+export default NumberOfClients;

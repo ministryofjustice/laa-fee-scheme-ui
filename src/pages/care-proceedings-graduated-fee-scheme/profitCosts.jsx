@@ -12,7 +12,7 @@ const ProfitCosts = () => {
         const profit = Number.parseFloat(profitCost);
         const fixed = Number(fixedFeeAmount);
 
-        if (profit > fixed * 2) {
+        if (profit < fixed * 2) {
             return navigate('/person-represented');
         }
         navigate('/court-type', {
@@ -65,7 +65,7 @@ const ProfitCosts = () => {
                             id="cost-input"
                             className="govuk-input"
                             style={{ maxWidth: '10.81ex' }}
-                            type="text"
+                            type="Number"
                             name="profit-cost"
                             onChange={handleProfitCost}
                         />
@@ -85,6 +85,7 @@ const ProfitCosts = () => {
                         className="govuk-button"
                         data-module="govuk-button"
                         onClick={handleContinue}
+                        disabled={!profitCost}
                     >
                         Continue
                     </button>

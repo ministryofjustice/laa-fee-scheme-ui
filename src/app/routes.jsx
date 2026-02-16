@@ -21,6 +21,9 @@ import FeeSchemeFgfCounselAdvocacy from '../pages/care-proceedings-graduated-fee
 import FeeSchemeFasAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFasAdvocacy';
 import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts';
 import PersonRepresented from '../pages/care-proceedings-graduated-fee-scheme/PersonRepresented';
+import NumberOfClients from '../pages/care-proceedings-graduated-fee-scheme/NumberOfClients';
+import ConsiderRegionOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderRegionOfProvider.jsx';
+import ConsiderTransferOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderTransferOfProvider.jsx';
 
 
 const AppRoutes = () => {
@@ -48,6 +51,10 @@ const AppRoutes = () => {
       <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
       <Route path="/profit-costs" element={<ProfitCosts />} />
       <Route path="/person-represented" element={<PersonRepresented />} />
+      <Route path="/number-of-clients" element={<NumberOfClients />} />
+      <Route path="/consider-provider-region" element={<ConsiderRegionOfProvider />} />
+      <Route path="/consider-transfer-provider" element={<ConsiderTransferOfProvider />} />
+
     </Routes>
     <Footer />
     </>
