@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import AppContext from "../context/AppContext";
+import FeeTotal from "../components/FeeTotal";
 
 const BillTypePage = () => {
   const navigate = useNavigate();
+
+  const { addFee, getFeeTotal } = useContext(AppContext);
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -25,6 +29,8 @@ const BillTypePage = () => {
   };
 
   const handleContinue = () => {
+    const billTypeFee =  (selectedRadio === 'finalBill') ? 50 : 25;
+    addFee('Bill Type Fee', billTypeFee)
     navigate("/court-type");
   };
 
@@ -34,7 +40,7 @@ const BillTypePage = () => {
         <h1 className="govuk-heading-xl">
           Private Family Law Representation Scheme (PFLRS)
         </h1>
-
+        <FeeTotal value={getFeeTotal()} />
         <RadioButtonsPanel
           name="billType"
           heading="Select bill type"

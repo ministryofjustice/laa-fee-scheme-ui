@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import AppContext from "../context/AppContext";
+import FeeTotal from "../components/FeeTotal";
 
 const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
+
+  const { addFee, getFeeTotal } = useContext(AppContext);
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -13,10 +17,12 @@ const LevelOfWorkDonePage = () => {
     {
       value: "legalHelp",
       label: "Legal Help (higher)",
+      fee: 250,
     },
     {
       value: "legalRep",
       label: "Legal Representation",
+      fee: 300,
     },
   ];
 
@@ -24,28 +30,11 @@ const LevelOfWorkDonePage = () => {
     setSelectedRadio(e.target.value);
   };
 
-  const applyEarlyResolutionSettlementFee = () => {
-    console.log("Apply bolt-on Early Resolution/Settlement Fee");
-  };
-
-  const applyEnforcementProceedingsFee = () => {
-    console.log("Apply bolt-on Enforcement Proceedings Fee");
-  };
-
   const handleContinue = () => {
-    // if finance and resolution at first app OR
-    // Financial Dispute Resolution (FDR) hearing
-    const isEarlyResolutionSettlement = false;
-    if (isEarlyResolutionSettlement) {
-      applyEarlyResolutionSettlementFee();
-    }
-
-    // if returned to court after final hearing for enforcement proceedings fee
-    const isEnforcementProceeding = false;
-    if (isEnforcementProceeding) {
-      applyEnforcementProceedingsFee();
-    }
-
+    const selectedOption = options.find(
+      (option) => option.value === selectedRadio,
+    );
+    addFee("Level Of Work Fee", selectedOption.fee);
     navigate("/calculate-fees");
   };
 
@@ -55,6 +44,8 @@ const LevelOfWorkDonePage = () => {
         <h1 className="govuk-heading-xl">
           Private Family Law Representation Scheme (PFLRS)
         </h1>
+
+        <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
           name="levelOfWork"

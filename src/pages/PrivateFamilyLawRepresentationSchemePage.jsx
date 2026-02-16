@@ -34,7 +34,7 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
 
   const handleContinue = () => {
     if (selectedRadio === "excluded") {
-      navigate("/process-complete");
+      navigate("/fee-summary");
     } else {
       navigate("/certification-date");
     }

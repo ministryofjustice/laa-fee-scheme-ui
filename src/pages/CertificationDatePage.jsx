@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
+import AppContext from "../context/AppContext";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
   const [certificationDate, setCertificationDate] = useState("");
+
+  const { addFee } = useContext(AppContext);
 
   const handleCertificationDateChange = (e) => {
     setCertificationDate(e.target.value);
   };
 
   const handleContinue = () => {
+    addFee('Certification Date Fee',100);
     navigate("/provider-location");
   };
 
@@ -21,7 +25,6 @@ const CertificationDatePage = () => {
         <h1 className="govuk-heading-xl">
           Private Family Law Representation Scheme (PFLRS)
         </h1>
-
         <div className="govuk-form-group">
           <fieldset
             className="govuk-fieldset"

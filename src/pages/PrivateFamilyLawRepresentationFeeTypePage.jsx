@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import AppContext from "../context/AppContext";
+import FeeTotal from "../components/FeeTotal";
 
 const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
 
+  const { getFeeTotal, setFeeType } = useContext(AppContext);
+
   const [selectedRadio, setSelectedRadio] = useState("");
-  const [feeType, setFeeType] = useState("");
 
   const options = [
     {
@@ -54,7 +57,7 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
         <h1 className="govuk-heading-xl">
           Private Family Law Representation Scheme (PFLRS)
         </h1>
-
+        <FeeTotal value={getFeeTotal()} />
         <RadioButtonsPanel
           name="feeType"
           heading="Select fee type"

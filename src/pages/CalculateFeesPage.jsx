@@ -6,7 +6,7 @@ const CalculateHourlyRatesPage = () => {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    navigate("/process-complete");
+    navigate("/fee-summary");
   };
 
   return (

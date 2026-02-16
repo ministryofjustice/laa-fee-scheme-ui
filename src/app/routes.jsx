@@ -9,19 +9,15 @@ import ProceedingTypes from '../pages/ProceedingTypes';
 import AdvocatesMeetingsPage from '../pages/advocates-meetings/AdvocatesMeetingsPage';
 import Hearing from '../pages/Hearing';
 import CertificationDatePage from "../pages/CertificationDatePage";
-import ProcessCompletePage from "../pages/ProcessCompletePage";
 import ProviderLocationDatePage from "../pages/ProviderLocationPage";
 import CalculateFeesPage from "../pages/CalculateFeesPage";
 import BillTypePage from "../pages/BillTypePage";
 import CourtTypePage from "../pages/CourtTypePage";
 import LevelOfWorkDonePage from "../pages/LevelOfWorkDonePage";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import FeeSummaryPage from '../pages/FeeSummaryPage';
 
 const AppRoutes = () => {
   return (
-    <>
-    <Header />
     <Routes>
       <Route path="/" element={<AdvocateClaimOverview />} />
       <Route path="/fee-schemes" element={<FeeSchemes />} />
@@ -38,10 +34,8 @@ const AppRoutes = () => {
       <Route path="/bill-type" element={<BillTypePage />} />
       <Route path="/court-type" element={<CourtTypePage />} />
       <Route path="/level-of-work-done" element={<LevelOfWorkDonePage />} />
-      <Route path="/process-complete" element={<ProcessCompletePage />} />
+      <Route path="/fee-summary" element={<FeeSummaryPage />} />
     </Routes>
-    <Footer />
-    </>
   );
 };
 
