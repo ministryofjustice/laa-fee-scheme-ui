@@ -64,10 +64,10 @@ const CourtTypePage = () => {
         />
 
         <div className="govuk-button-group">
+          <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-          <BackButton />
         </div>
       </main>
     </div>

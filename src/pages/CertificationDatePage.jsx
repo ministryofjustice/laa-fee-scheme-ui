@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
+  const [certificationDate, setCertificationDate] = useState("");
+
+  const handleCertificationDateChange = (e) => {
+    setCertificationDate(e.target.value);
+  };
 
   const handleContinue = () => {
     navigate("/provider-location");
@@ -12,7 +18,9 @@ const CertificationDatePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">Private Family Law Representation Scheme (PFLRS)</h1>
+        <h1 className="govuk-heading-xl">
+          Private Family Law Representation Scheme (PFLRS)
+        </h1>
 
         <div className="govuk-form-group">
           <fieldset
@@ -25,58 +33,16 @@ const CertificationDatePage = () => {
                 What is the certification date?
               </h1>
             </legend>
-            <div id="cerification-date-hint" className="govuk-hint">
-              For example, 27 3 2007
-            </div>
             <div className="govuk-date-input" id="cerification-date">
               <div className="govuk-date-input__item">
                 <div className="govuk-form-group">
-                  <label
-                    className="govuk-label govuk-date-input__label"
-                    htmlFor="cerification-date-day"
-                  >
-                    Day
-                  </label>
                   <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-2"
-                    id="cerification-date-day"
-                    name="cerification-date-day"
-                    type="text"
-                    inputmode="numeric"
-                  />
-                </div>
-              </div>
-              <div className="govuk-date-input__item">
-                <div className="govuk-form-group">
-                  <label
-                    className="govuk-label govuk-date-input__label"
-                    htmlFor="cerification-date-month"
-                  >
-                    Month
-                  </label>
-                  <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-2"
-                    id="cerification-date-month"
-                    name="cerification-date-month"
-                    type="text"
-                    inputmode="numeric"
-                  />
-                </div>
-              </div>
-              <div className="govuk-date-input__item">
-                <div className="govuk-form-group">
-                  <label
-                    className="govuk-label govuk-date-input__label"
-                    htmlFor="cerification-date-year"
-                  >
-                    Year
-                  </label>
-                  <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-4"
-                    id="cerification-date-year"
-                    name="cerification-date-year"
-                    type="text"
-                    inputMode="numeric"
+                    className="govuk-input govuk-input--width-10"
+                    id="cerificationDate"
+                    name="cerificationDate"
+                    type="date"
+                    value={certificationDate}
+                    onChange={handleCertificationDateChange}
                   />
                 </div>
               </div>
@@ -85,8 +51,10 @@ const CertificationDatePage = () => {
         </div>
 
         <div className="govuk-button-group">
-          <NavButton onClick={handleContinue}>Continue</NavButton>
           <BackButton />
+          <NavButton onClick={handleContinue} disabled={!certificationDate}>
+            Continue
+          </NavButton>
         </div>
       </main>
     </div>
