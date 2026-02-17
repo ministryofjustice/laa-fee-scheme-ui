@@ -40,7 +40,11 @@ const CourtTypePage = () => {
   };
 
   const handleContinue = () => {
-    navigate(nextPath);
+    navigate(nextPath, {
+          state: {
+            title: title,
+          }
+    });
   };
 
   return (

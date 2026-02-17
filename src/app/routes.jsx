@@ -19,11 +19,13 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FeeSchemeFgfCounselAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFgfCounselAdvocacy';
 import FeeSchemeFasAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFasAdvocacy';
-import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts';
+import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts.jsx';
 import PersonRepresented from '../pages/care-proceedings-graduated-fee-scheme/PersonRepresented';
 import NumberOfClients from '../pages/care-proceedings-graduated-fee-scheme/NumberOfClients';
 import ConsiderRegionOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderRegionOfProvider.jsx';
 import ConsiderTransferOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderTransferOfProvider.jsx';
+import ConsiderWorkDone from '../pages/care-proceedings-graduated-fee-scheme/ConsiderWorkDone.jsx';
+import WorkDoneQuantity from '../pages/care-proceedings-graduated-fee-scheme/WorkDoneQuantity.jsx';
 
 
 const AppRoutes = () => {
@@ -54,6 +56,8 @@ const AppRoutes = () => {
       <Route path="/number-of-clients" element={<NumberOfClients />} />
       <Route path="/consider-provider-region" element={<ConsiderRegionOfProvider />} />
       <Route path="/consider-transfer-provider" element={<ConsiderTransferOfProvider />} />
+      <Route path="/consider-work-done" element={<ConsiderWorkDone />} />
+      <Route path="/work-done-quantity" element={<WorkDoneQuantity />} />
 
     </Routes>
     <Footer />

@@ -15,14 +15,8 @@ const ProfitCosts = () => {
         if (profit < fixed * 2) {
             return navigate('/person-represented');
         }
-        navigate('/court-type', {
-            state: {
-                title: "Care Proceedings Graduated Fee Scheme (CPGFS)",
-                nextPath: "/calculate-fees"
-            }
-        });
+        navigate('/consider-work-done');
     };
-
 
     return (
         <div className="govuk-width-container">
