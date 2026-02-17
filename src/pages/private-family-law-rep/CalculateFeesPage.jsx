@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import ButtonContainer from "../components/ButtonContainer";
-import NavButton from "../components/NavButton";
-import PageHeading from "../components/PageHeading";
-import PageSubHeading from "../components/PageSubHeading";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import NavButton from "../../components/NavButton";
+import PageHeading from "../../components/PageHeading";
+import PageSubHeading from "../../components/PageSubHeading";
 
 const CalculateHourlyRatesPage = () => {
   const navigate = useNavigate();

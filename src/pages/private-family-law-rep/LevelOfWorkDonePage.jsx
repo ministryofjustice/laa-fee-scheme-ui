@@ -1,14 +1,13 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import ButtonContainer from "../components/ButtonContainer";
-import PageHeading from "../components/PageHeading";
-import FeeTotal from "../components/FeeTotal";
-import NavButton from "../components/NavButton";
-import RadioButtonsPanel from "../components/RadioButtonsPanel";
-import AppContext from "../context/AppContext";
+import BackButton from "../../components/BackButton";
+import NavButton from "../../components/NavButton";
+import RadioButtonsPanel from "../../components/RadioButtonsPanel";
+import AppContext from "../../context/AppContext";
+import FeeTotal from "../../components/FeeTotal";
+import PageHeading from "../../components/PageHeading";
 
-const ProviderLocationDatePage = () => {
+const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
 
   const { addFee, getFeeTotal } = useContext(AppContext);
@@ -17,12 +16,14 @@ const ProviderLocationDatePage = () => {
 
   const options = [
     {
-      value: "london",
-      label: "London",
+      value: "legalHelp",
+      label: "Legal Help (higher)",
+      fee: 250,
     },
     {
-      value: "nonLondon",
-      label: "Non-London",
+      value: "legalRep",
+      label: "Legal Representation",
+      fee: 300,
     },
   ];
 
@@ -31,9 +32,11 @@ const ProviderLocationDatePage = () => {
   };
 
   const handleContinue = () => {
-    const providerLocationFee = selectedRadio === "london" ? 200 : 150;
-    addFee("Provider Location Fee", providerLocationFee);
-    navigate("/private-family-law-representation-fee-type");
+    const selectedOption = options.find(
+      (option) => option.value === selectedRadio,
+    );
+    addFee("Level Of Work Fee", selectedOption.fee);
+    navigate("/calculate-fees");
   };
 
   return (
@@ -46,22 +49,22 @@ const ProviderLocationDatePage = () => {
         <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
-          name="providerLocation"
-          heading="Select provider location"
+          name="levelOfWork"
+          heading="Select level of work done"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
         />
 
-        <ButtonContainer>
+        <div className="govuk-button-group">
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </ButtonContainer>
+        </div>
       </main>
     </div>
   );
 };
 
-export default ProviderLocationDatePage;
+export default LevelOfWorkDonePage;

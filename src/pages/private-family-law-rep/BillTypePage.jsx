@@ -1,13 +1,14 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import NavButton from "../components/NavButton";
-import RadioButtonsPanel from "../components/RadioButtonsPanel";
-import AppContext from "../context/AppContext";
-import FeeTotal from "../components/FeeTotal";
-import PageHeading from "../components/PageHeading";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import FeeTotal from "../../components/FeeTotal";
+import NavButton from "../../components/NavButton";
+import PageHeading from "../../components/PageHeading";
+import RadioButtonsPanel from "../../components/RadioButtonsPanel";
+import AppContext from "../../context/AppContext";
 
-const LevelOfWorkDonePage = () => {
+const BillTypePage = () => {
   const navigate = useNavigate();
 
   const { addFee, getFeeTotal } = useContext(AppContext);
@@ -16,14 +17,12 @@ const LevelOfWorkDonePage = () => {
 
   const options = [
     {
-      value: "legalHelp",
-      label: "Legal Help (higher)",
-      fee: 250,
+      value: "finalBill",
+      label: "Final Bill",
     },
     {
-      value: "legalRep",
-      label: "Legal Representation",
-      fee: 300,
+      value: "transfer",
+      label: "Transfer",
     },
   ];
 
@@ -32,11 +31,9 @@ const LevelOfWorkDonePage = () => {
   };
 
   const handleContinue = () => {
-    const selectedOption = options.find(
-      (option) => option.value === selectedRadio,
-    );
-    addFee("Level Of Work Fee", selectedOption.fee);
-    navigate("/calculate-fees");
+    const billTypeFee = selectedRadio === "finalBill" ? 50 : 25;
+    addFee("Bill Type Fee", billTypeFee);
+    navigate("/court-type");
   };
 
   return (
@@ -47,24 +44,25 @@ const LevelOfWorkDonePage = () => {
         </PageHeading>
 
         <FeeTotal value={getFeeTotal()} />
-
+        
         <RadioButtonsPanel
-          name="levelOfWork"
-          heading="Select level of work done"
+          name="billType"
+          heading="Select bill type"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
+          handleContinue={handleContinue}
         />
 
-        <div className="govuk-button-group">
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );
 };
 
-export default LevelOfWorkDonePage;
+export default BillTypePage;

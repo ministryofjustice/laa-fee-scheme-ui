@@ -1,8 +1,8 @@
-import AppContext from "../context/AppContext";
-import PageHeading from "../components/PageHeading";
-import PageSubHeading from "../components/PageSubHeading";
 import { useContext } from "react";
-import { formatCurrency } from "../utils/formatUtil";
+import PageHeading from "../../components/PageHeading";
+import PageSubHeading from "../../components/PageSubHeading";
+import AppContext from "../../context/AppContext";
+import { formatCurrency } from "../../utils/formatUtil";
 
 const TableRow = ({ label, value, isBold = false }) => {
   return (

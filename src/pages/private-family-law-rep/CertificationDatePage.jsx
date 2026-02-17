@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import ButtonContainer from "../components/ButtonContainer";
-import NavButton from "../components/NavButton";
-import PageHeading from "../components/PageHeading";
-import AppContext from "../context/AppContext";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import NavButton from "../../components/NavButton";
+import PageHeading from "../../components/PageHeading";
+import AppContext from "../../context/AppContext";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();

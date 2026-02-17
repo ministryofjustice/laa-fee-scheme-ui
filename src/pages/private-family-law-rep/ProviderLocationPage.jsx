@@ -1,14 +1,14 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import ButtonContainer from "../components/ButtonContainer";
-import FeeTotal from "../components/FeeTotal";
-import NavButton from "../components/NavButton";
-import PageHeading from "../components/PageHeading";
-import RadioButtonsPanel from "../components/RadioButtonsPanel";
-import AppContext from "../context/AppContext";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import PageHeading from "../../components/PageHeading";
+import FeeTotal from "../../components/FeeTotal";
+import NavButton from "../../components/NavButton";
+import RadioButtonsPanel from "../../components/RadioButtonsPanel";
+import AppContext from "../../context/AppContext";
 
-const BillTypePage = () => {
+const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
 
   const { addFee, getFeeTotal } = useContext(AppContext);
@@ -17,12 +17,12 @@ const BillTypePage = () => {
 
   const options = [
     {
-      value: "finalBill",
-      label: "Final Bill",
+      value: "london",
+      label: "London",
     },
     {
-      value: "transfer",
-      label: "Transfer",
+      value: "nonLondon",
+      label: "Non-London",
     },
   ];
 
@@ -31,9 +31,9 @@ const BillTypePage = () => {
   };
 
   const handleContinue = () => {
-    const billTypeFee = selectedRadio === "finalBill" ? 50 : 25;
-    addFee("Bill Type Fee", billTypeFee);
-    navigate("/court-type");
+    const providerLocationFee = selectedRadio === "london" ? 200 : 150;
+    addFee("Provider Location Fee", providerLocationFee);
+    navigate("/private-family-law-representation-fee-type");
   };
 
   return (
@@ -44,14 +44,13 @@ const BillTypePage = () => {
         </PageHeading>
 
         <FeeTotal value={getFeeTotal()} />
-        
+
         <RadioButtonsPanel
-          name="billType"
-          heading="Select bill type"
+          name="providerLocation"
+          heading="Select provider location"
           options={options}
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
-          handleContinue={handleContinue}
         />
 
         <ButtonContainer>
@@ -65,4 +64,4 @@ const BillTypePage = () => {
   );
 };
 
-export default BillTypePage;
+export default ProviderLocationDatePage;
