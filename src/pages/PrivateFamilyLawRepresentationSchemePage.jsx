@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
 import NavButton from "../components/NavButton";
+import PageHeading from "../components/PageHeading";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 
 const PrivateFamilyLawRepresentationSchemePage = () => {
@@ -43,9 +45,9 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading className="govuk-heading-xl">
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
 
         <RadioButtonsPanel
           name="proceedingsType"
@@ -55,12 +57,12 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
           handleRadioChange={handleRadioChange}
         />
 
-        <div className="govuk-button-group">
+        <ButtonContainer className="govuk-button-group">
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
+import FeeTotal from "../components/FeeTotal";
 import NavButton from "../components/NavButton";
+import PageHeading from "../components/PageHeading";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 import AppContext from "../context/AppContext";
-import FeeTotal from "../components/FeeTotal";
 
 const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
@@ -17,17 +19,17 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
     {
       value: "profitCostsBelow",
       label: "Profit costs < 3x Fixed Fee",
-      feeType: "fixed",
+      feeType: "Fixed",
     },
     {
       value: "profitCostsAbove",
       label: "Profit costs > 3x Fixed Fee",
-      feeType: "hourlyRate",
+      feeType: "Hourly Rate",
     },
     {
       value: "solicitorInstructed",
       label: "Solicitor instructed for < 24 hours",
-      feeType: "hourlyRate",
+      feeType: "Hourly Rate",
     },
   ];
 
@@ -54,10 +56,12 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
+
         <FeeTotal value={getFeeTotal()} />
+
         <RadioButtonsPanel
           name="feeType"
           heading="Select fee type"
@@ -65,12 +69,13 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
         />
-        <div className="govuk-button-group">
+        
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

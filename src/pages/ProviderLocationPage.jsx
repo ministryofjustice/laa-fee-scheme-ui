@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
+import PageHeading from "../components/PageHeading";
+import FeeTotal from "../components/FeeTotal";
 import NavButton from "../components/NavButton";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 import AppContext from "../context/AppContext";
-import FeeTotal from "../components/FeeTotal";
 
 const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
@@ -37,10 +39,12 @@ const ProviderLocationDatePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
+
         <FeeTotal value={getFeeTotal()} />
+
         <RadioButtonsPanel
           name="providerLocation"
           heading="Select provider location"
@@ -49,12 +53,12 @@ const ProviderLocationDatePage = () => {
           handleRadioChange={handleRadioChange}
         />
 
-        <div className="govuk-button-group">
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

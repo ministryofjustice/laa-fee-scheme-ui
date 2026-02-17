@@ -10,15 +10,15 @@ export const AppProvider = ({ children }) => {
     setFeeData({ ...feeData, [fieldName]: amount });
   };
 
+  const hourlyRateFilter = ([key]) => ["Certification Date Fee", "Provider Location Fee"].includes(key);
+
   const getFeeTotal = () => {
     const feeItems =
-      feeType === "fixed"
+      feeType === "Fixed"
         ? Object.values(feeData)
         : Object.entries(feeData)
-            .filter(([key]) =>
-              ["Certification Date Fee", "Provider Location Fee"].includes(key),
-            )
-            .map(([key, value]) => value);
+            .filter(hourlyRateFilter)
+            .map(([, value]) => value);
 
     return feeItems.reduce((sum, value) => sum + value, 0);
   };

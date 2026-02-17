@@ -1,10 +1,12 @@
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
+import FeeTotal from "../components/FeeTotal";
 import NavButton from "../components/NavButton";
+import PageHeading from "../components/PageHeading";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
 import AppContext from "../context/AppContext";
-import FeeTotal from "../components/FeeTotal";
 
 const BillTypePage = () => {
   const navigate = useNavigate();
@@ -29,18 +31,20 @@ const BillTypePage = () => {
   };
 
   const handleContinue = () => {
-    const billTypeFee =  (selectedRadio === 'finalBill') ? 50 : 25;
-    addFee('Bill Type Fee', billTypeFee)
+    const billTypeFee = selectedRadio === "finalBill" ? 50 : 25;
+    addFee("Bill Type Fee", billTypeFee);
     navigate("/court-type");
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
+
         <FeeTotal value={getFeeTotal()} />
+        
         <RadioButtonsPanel
           name="billType"
           heading="Select bill type"
@@ -50,12 +54,12 @@ const BillTypePage = () => {
           handleContinue={handleContinue}
         />
 
-        <div className="govuk-button-group">
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

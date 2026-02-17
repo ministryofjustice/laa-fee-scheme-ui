@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
 import NavButton from "../components/NavButton";
+import PageHeading from "../components/PageHeading";
 import AppContext from "../context/AppContext";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
+
   const [certificationDate, setCertificationDate] = useState("");
 
   const { addFee } = useContext(AppContext);
@@ -15,16 +18,17 @@ const CertificationDatePage = () => {
   };
 
   const handleContinue = () => {
-    addFee('Certification Date Fee',100);
+    addFee("Certification Date Fee", 100);
     navigate("/provider-location");
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
+
         <div className="govuk-form-group">
           <fieldset
             className="govuk-fieldset"
@@ -32,9 +36,9 @@ const CertificationDatePage = () => {
             aria-describedby="cerification-date-hint"
           >
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 className="govuk-fieldset__heading">
+              <h2 className="govuk-fieldset__heading">
                 What is the certification date?
-              </h1>
+              </h2>
             </legend>
             <div className="govuk-date-input" id="cerification-date">
               <div className="govuk-date-input__item">
@@ -53,12 +57,12 @@ const CertificationDatePage = () => {
           </fieldset>
         </div>
 
-        <div className="govuk-button-group">
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!certificationDate}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

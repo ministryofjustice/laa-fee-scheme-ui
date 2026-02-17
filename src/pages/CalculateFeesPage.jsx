@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import ButtonContainer from "../components/ButtonContainer";
 import NavButton from "../components/NavButton";
+import PageHeading from "../components/PageHeading";
+import PageSubHeading from "../components/PageSubHeading";
 
 const CalculateHourlyRatesPage = () => {
   const navigate = useNavigate();
@@ -12,13 +15,18 @@ const CalculateHourlyRatesPage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">Private Family Law Representation Scheme (PFLRS)</h1>
-        <h2 className="govuk-heading-l">Calculate Fees</h2>
+        <PageHeading>
+          Private Family Law Representation Scheme (PFLRS)
+        </PageHeading>
+
+        <PageSubHeading>Calculate Fees</PageSubHeading>
+
         <p className="govuk-body">Click on continue to calculate fees</p>
-        <div className="govuk-button-group">
+
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue}>Continue</NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );
