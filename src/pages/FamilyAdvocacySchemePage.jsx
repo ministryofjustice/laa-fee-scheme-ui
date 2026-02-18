@@ -4,8 +4,14 @@ import { useSchemeUIContext } from '../context/SchemeUIContext';
 
 const FamilyAdvocacySchemePage = () => {
     const navigate = useNavigate();
-    const { formData, updateFormData } = useSchemeUIContext();
+    const { formData, updateFormData, resetFormData } = useSchemeUIContext();
     const [selectedAspect, setSelectedAspect] = useState(formData.aspectOfWork || '');
+
+    // Reset all form data when entering this page
+    useEffect(() => {
+        resetFormData();
+        setSelectedAspect('');
+    }, []);
 
     const aspectOptions = [
         { value: 'private-law-finance', label: 'Private Law Finance' },
@@ -31,7 +37,7 @@ const FamilyAdvocacySchemePage = () => {
     };
 
     return (
-        <div className="govuk-width-container" style={{ maxWidth: 'calc(100% - 510px)' }}>
+        <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
                 <h1 className="govuk-heading-xl">Family Advocacy Scheme (FAS)</h1>
                 

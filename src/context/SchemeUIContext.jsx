@@ -28,10 +28,16 @@ export const SchemeUIProvider = ({ children }) => {
         judgeLevel: '',
         courtDirected: '',
         
+        // Calculated Fee
+        calculatedFee: null,
+        interimHearingFees: [],
+        totalInterimFee: null,
+
         // Bolton Page
         isBoltonApplicable: '',
         boltonCategory: '',
         boltonItems: [],
+        totalBoltonFee: null,
         
         // Advocates Meetings Page
         attendedAdvocatesMeetings: '',
@@ -64,9 +70,13 @@ export const SchemeUIProvider = ({ children }) => {
             days: '',
             judgeLevel: '',
             courtDirected: '',
+            calculatedFee: null,
+            interimHearingFees: [],
+            totalInterimFee: null,
             isBoltonApplicable: '',
             boltonCategory: '',
             boltonItems: [],
+            totalBoltonFee: null,
             attendedAdvocatesMeetings: '',
             advocatesMeetings: []
         });

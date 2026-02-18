@@ -106,7 +106,7 @@ const AdvocatesMeetingsPage = () => {
     };
 
     return (
-        <div className="govuk-width-container" style={{ maxWidth: 'calc(100% - 510px)' }}>
+        <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
                 <h1 className="govuk-heading-xl">Advocates' Meetings</h1>
 

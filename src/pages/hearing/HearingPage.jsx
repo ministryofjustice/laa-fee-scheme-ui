@@ -1,35 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSchemeUIContext } from '../context/SchemeUIContext';
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
+import { PublicLawFeeService } from '../../services/advocacySchemeService';
+import HearingItem, { durationBandOptions, judgeLevelOptions } from './HearingItem';
 
 const Hearing = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { updateMultipleFields } = useSchemeUIContext();
-    const [hearingDate, setHearingDate] = useState('');
-    const [hearingType, setHearingType] = useState('');
-    const [numberOfInterimProceedings, setNumberOfInterimProceedings] = useState('');
-    const [interimHearings, setInterimHearings] = useState([]);
-    const [durationBand, setDurationBand] = useState('');
-    const [days, setDays] = useState('');
-    const [judgeLevel, setJudgeLevel] = useState('');
-    const [courtDirected, setCourtDirected] = useState('');
+    const { formData, updateMultipleFields } = useSchemeUIContext();
 
-    const proceedingType = location.state?.proceedingType || '';
+    const proceedingType = location.state?.proceedingType || formData.proceedingType || '';
     const lawType = location.state?.lawType || '';
-    const aspectOfWork = location.state?.aspectOfWork || '';
+    const aspectOfWork = location.state?.aspectOfWork || formData.aspectOfWork || '';
+
+    const [hearingDate, setHearingDate] = useState(formData.hearingDate || '');
+    const [hearingType, setHearingType] = useState(formData.hearingType || proceedingType || '');
+    const [numberOfInterimProceedings, setNumberOfInterimProceedings] = useState(formData.numberOfInterimProceedings || '');
+    const [interimHearings, setInterimHearings] = useState(formData.interimHearings || []);
+    const [durationBand, setDurationBand] = useState(formData.durationBand || '');
+    const [days, setDays] = useState(formData.days || '');
+    const [judgeLevel, setJudgeLevel] = useState(formData.judgeLevel || '');
+    const [courtDirected, setCourtDirected] = useState(formData.courtDirected || '');
+
+    // Sync auto-set hearingType to context
+    React.useEffect(() => {
+        if (!formData.hearingType && proceedingType) {
+            updateMultipleFields({ hearingType: proceedingType });
+        }
+    }, []);
+
+    // Calculate fee for single hearing (interim with 1 proceeding, or final hearing)
+    const calculatedFee = useMemo(() => {
+        if (hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && durationBand && judgeLevel) {
+            return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, durationBand);
+        }
+        if (hearingType === 'FINAL_HEARING' && days && judgeLevel) {
+            return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, null, days);
+        }
+        return null;
+    }, [aspectOfWork, hearingType, durationBand, judgeLevel, days, numberOfInterimProceedings]);
+
+    // Calculate fees for each interim hearing when multiple proceedings
+    const interimHearingFees = useMemo(() => {
+        if (hearingType !== 'INTERIM_HEARING' || parseInt(numberOfInterimProceedings) <= 1) return [];
+        return interimHearings.map(h => {
+            if (h.durationBand && h.judgeLevel) {
+                return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, h.judgeLevel, 'INTERIM_HEARING', h.durationBand);
+            }
+            return null;
+        });
+    }, [aspectOfWork, hearingType, numberOfInterimProceedings, interimHearings]);
+
+    const totalInterimFee = useMemo(() => {
+        if (interimHearingFees.length === 0 || interimHearingFees.some(f => f === null)) return null;
+        return parseFloat(interimHearingFees.reduce((sum, f) => sum + f, 0).toFixed(2));
+    }, [interimHearingFees]);
 
     const hearingTypeOptions = [
         { value: '', label: 'Select hearing type' },
         { value: 'INTERIM_HEARING', label: 'Interim Hearing' },
         { value: 'FINAL_HEARING', label: 'Final Hearing' }
-    ];
-
-    const durationBandOptions = [
-        { value: '', label: 'Select duration band' },
-        { value: 'INTERIM_HEARING_UNIT_1', label: 'Interim Hearing Unit 1' },
-        { value: 'INTERIM_HEARING_UNIT_2', label: 'Interim Hearing Unit 2' },
-        { value: 'MULTIPLE_UNIT_2S', label: 'Multiple Unit 2s' }
     ];
 
     const daysOptions = [
@@ -54,16 +84,6 @@ const Hearing = () => {
         { value: '7', label: '7' },
         { value: '8', label: '8' },
         { value: '9', label: '9' }
-    ];
-
-    const judgeLevelOptions = [
-        { value: '', label: 'Select Judge Level' },
-        { value: 'MAGISTRATES_COURT_JUDGE', label: 'Magistrates’ Court judge' },
-        { value: 'DISTRICT_JUDGE', label: 'District Judge' },
-        { value: 'CIRCUIT_JUDGE', label: 'Circuit Judge' },
-        { value: 'HIGH_COURT_JUDGE', label: 'High Court Judge' },
-        { value: 'DEPUTY_DISTRICT_JUDGE', label: 'Deputy District Judge' },
-        { value: 'OTHER', label: 'Other' }
     ];
 
     const handleHearingDateChange = (e) => {
@@ -110,9 +130,9 @@ const Hearing = () => {
         }
     };
 
-    const handleUpdateInterimHearing = (id, field, value) => {
-        const updated = interimHearings.map(hearing => 
-            hearing.id === id ? { ...hearing, [field]: value } : hearing
+    const handleUpdateInterimHearing = (id, updates) => {
+        const updated = interimHearings.map(hearing =>
+            hearing.id === id ? { ...hearing, ...updates } : hearing
         );
         setInterimHearings(updated);
         updateMultipleFields({ interimHearings: updated });
@@ -143,6 +163,15 @@ const Hearing = () => {
     };
 
     const handleContinue = () => {
+        const isMultipleInterim = hearingType === 'INTERIM_HEARING' && parseInt(numberOfInterimProceedings) > 1;
+        const fee = isMultipleInterim ? totalInterimFee : calculatedFee;
+
+        updateMultipleFields({
+            calculatedFee: fee,
+            interimHearingFees: isMultipleInterim ? interimHearingFees : [],
+            totalInterimFee: isMultipleInterim ? totalInterimFee : null,
+        });
+
         console.log('Proceeding Type:', proceedingType);
         console.log('Law Type:', lawType);
         console.log('Aspect of Work:', aspectOfWork);
@@ -152,12 +181,13 @@ const Hearing = () => {
         console.log('Days:', days);
         console.log('Judge Level:', judgeLevel);
         console.log('Court Directed:', courtDirected);
+        console.log('Calculated Fee: £', fee);
         
         navigate('/bolton');
     };
 
     return (
-        <div className="govuk-width-container" style={{ maxWidth: 'calc(100% - 510px)' }}>
+        <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
                 <h1 className="govuk-heading-l">Hearing Details</h1>
 
@@ -172,6 +202,7 @@ const Hearing = () => {
                     </div>
                 )}
 
+                {proceedingType !== 'INTERIM_HEARING' && (
                 <div className="govuk-form-group">
                     <label className="govuk-label govuk-label--m" htmlFor="hearing-date">
                         Date of Hearing
@@ -185,6 +216,7 @@ const Hearing = () => {
                         onChange={handleHearingDateChange}
                     />
                 </div>
+                )}
 
                 <div className="govuk-form-group">
                     <label className="govuk-label govuk-label--m" htmlFor="hearing-type">
@@ -229,96 +261,13 @@ const Hearing = () => {
                 {hearingType === 'INTERIM_HEARING' && parseInt(numberOfInterimProceedings) > 1 && (
                     <>
                         {interimHearings.map((hearing, index) => (
-                            <div key={hearing.id} style={{ border: '1px solid #b1b4b6', padding: '20px', marginBottom: '20px' }}>
-                                <h2 className="govuk-heading-m">Interim Hearing {index + 1}</h2>
-
-                                <div className="govuk-form-group">
-                                    <label className="govuk-label govuk-label--m" htmlFor={`hearing-date-${hearing.id}`}>
-                                        Date of Hearing
-                                    </label>
-                                    <input
-                                        className="govuk-input govuk-input--width-10"
-                                        id={`hearing-date-${hearing.id}`}
-                                        type="date"
-                                        value={hearing.hearingDate}
-                                        onChange={(e) => handleUpdateInterimHearing(hearing.id, 'hearingDate', e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="govuk-form-group">
-                                    <label className="govuk-label govuk-label--m" htmlFor={`duration-band-${hearing.id}`}>
-                                        Duration Band
-                                    </label>
-                                    <select
-                                        className="govuk-select govuk-!-width-two-thirds"
-                                        id={`duration-band-${hearing.id}`}
-                                        value={hearing.durationBand}
-                                        onChange={(e) => handleUpdateInterimHearing(hearing.id, 'durationBand', e.target.value)}
-                                    >
-                                        {durationBandOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="govuk-form-group">
-                                    <label className="govuk-label govuk-label--m" htmlFor={`judge-level-${hearing.id}`}>
-                                        Judge level
-                                    </label>
-                                    <select
-                                        className="govuk-select govuk-!-width-two-thirds"
-                                        id={`judge-level-${hearing.id}`}
-                                        value={hearing.judgeLevel}
-                                        onChange={(e) => handleUpdateInterimHearing(hearing.id, 'judgeLevel', e.target.value)}
-                                    >
-                                        {judgeLevelOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="govuk-form-group">
-                                    <fieldset className="govuk-fieldset">
-                                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                            Was this advocacy court-directed?
-                                        </legend>
-                                        <div className="govuk-radios govuk-radios--inline">
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id={`court-directed-yes-${hearing.id}`}
-                                                    name={`courtDirected-${hearing.id}`}
-                                                    type="radio"
-                                                    value="YES"
-                                                    checked={hearing.courtDirected === 'YES'}
-                                                    onChange={(e) => handleUpdateInterimHearing(hearing.id, 'courtDirected', e.target.value)}
-                                                />
-                                                <label className="govuk-label govuk-radios__label" htmlFor={`court-directed-yes-${hearing.id}`}>
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="govuk-radios__item">
-                                                <input
-                                                    className="govuk-radios__input"
-                                                    id={`court-directed-no-${hearing.id}`}
-                                                    name={`courtDirected-${hearing.id}`}
-                                                    type="radio"
-                                                    value="NO"
-                                                    checked={hearing.courtDirected === 'NO'}
-                                                    onChange={(e) => handleUpdateInterimHearing(hearing.id, 'courtDirected', e.target.value)}
-                                                />
-                                                <label className="govuk-label govuk-radios__label" htmlFor={`court-directed-no-${hearing.id}`}>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
+                            <HearingItem
+                                key={hearing.id}
+                                hearing={hearing}
+                                index={index}
+                                onUpdate={handleUpdateInterimHearing}
+                                calculatedFee={interimHearingFees[index]}
+                            />
                         ))}
                     </>
                 )}
@@ -483,6 +432,41 @@ const Hearing = () => {
                     </>
                 )}
 
+                {/* Fee Display */}
+                {calculatedFee !== null && hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && (
+                    <div className="govuk-inset-text" style={{ borderLeftColor: '#1d70b8' }}>
+                        <h2 className="govuk-heading-s" style={{ marginBottom: '5px' }}>Calculated Hearing Fee</h2>
+                        <p className="govuk-body-l" style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                            £{calculatedFee.toFixed(2)}
+                        </p>
+                    </div>
+                )}
+
+                {calculatedFee !== null && hearingType === 'FINAL_HEARING' && (
+                    <div className="govuk-inset-text" style={{ borderLeftColor: '#1d70b8' }}>
+                        <h2 className="govuk-heading-s" style={{ marginBottom: '5px' }}>Calculated Hearing Fee ({days} day{parseInt(days) > 1 ? 's' : ''})</h2>
+                        <p className="govuk-body-l" style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                            £{calculatedFee.toFixed(2)}
+                        </p>
+                    </div>
+                )}
+
+                {hearingType === 'INTERIM_HEARING' && parseInt(numberOfInterimProceedings) > 1 && interimHearingFees.length > 0 && (
+                    <div className="govuk-inset-text" style={{ borderLeftColor: '#1d70b8' }}>
+                        <h2 className="govuk-heading-s" style={{ marginBottom: '10px' }}>Calculated Hearing Fees</h2>
+                        {interimHearingFees.map((fee, idx) => (
+                            <p key={idx} className="govuk-body" style={{ marginBottom: '5px' }}>
+                                Interim Hearing {idx + 1}: {fee !== null ? `£${fee.toFixed(2)}` : '—'}
+                            </p>
+                        ))}
+                        {totalInterimFee !== null && (
+                            <p className="govuk-body-l" style={{ fontWeight: 'bold', marginTop: '10px', marginBottom: 0 }}>
+                                Total: £{totalInterimFee.toFixed(2)}
+                            </p>
+                        )}
+                    </div>
+                )}
+
                 <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem' }}>
                     <button
                         className="govuk-button govuk-button--secondary"
@@ -497,7 +481,7 @@ const Hearing = () => {
                         data-module="govuk-button"
                         onClick={handleContinue}
                         disabled={
-                            !hearingDate || 
+                            (proceedingType !== 'INTERIM_HEARING' && !hearingDate) || 
                             !hearingType || 
                             (hearingType === 'INTERIM_HEARING' && !numberOfInterimProceedings) ||
                             (hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && (!durationBand || !judgeLevel || !courtDirected)) ||

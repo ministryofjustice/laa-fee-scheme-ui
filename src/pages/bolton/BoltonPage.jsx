@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSchemeUIContext } from '../context/SchemeUIContext';
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
+import { PublicLawFeeService } from '../../services/advocacySchemeService';
+import { BoltOnCategory } from '../../assets/public-law-advocacy-fees/boltOnCategoryEnum';
+import BoltonItem from './BoltonItem';
+
+/**
+ * Maps UI bolt-on type values to BoltOnCategory enum values.
+ */
+const boltOnTypeMapping = Object.freeze({
+    'expert-cross-examination-25': BoltOnCategory.EXPERT_CROSS_EXAMINATION,
+    'expert-cross-examination-20': BoltOnCategory.EXPERT_CROSS_EXAMINATION,
+    'client-allegations-significant-harm-25': BoltOnCategory.CLIENT_ALLEGATIONS_OF_HARM,
+    'client-lack-of-understanding-25': BoltOnCategory.CLIENT_LACK_OF_UNDERSTANDING,
+    'exceptional-travel-fee': BoltOnCategory.EXCEPTIONAL_TRAVEL_FEE,
+});
 
 const Bolton = () => {
     const navigate = useNavigate();
-    const { updateMultipleFields } = useSchemeUIContext();
-    const [isBoltonApplicable, setIsBoltonApplicable] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [boltonItems, setBoltonItems] = useState([]);
+    const { formData, updateMultipleFields } = useSchemeUIContext();
+    const [isBoltonApplicable, setIsBoltonApplicable] = useState(formData.isBoltonApplicable || '');
+    const [selectedCategory, setSelectedCategory] = useState(formData.aspectOfWork || '');
+    const [boltonItems, setBoltonItems] = useState(formData.boltonItems || []);
+
+    // Get the hearing fee from context for percentage-based bolt-on calculations
+    const hearingFee = formData.calculatedFee || 0;
 
     const aspectOptions = [
         { value: '', label: 'Select a category' },
@@ -90,17 +107,24 @@ const Bolton = () => {
         updateMultipleFields({ boltonItems: updatedItems });
     };
 
-    const handleUpdateBolton = (id, field, value) => {
+    const handleUpdateBolton = (id, updates) => {
         const updated = boltonItems.map(item => {
-            if (item.id === id) {
-                const updatedItem = { ...item, [field]: value };
-                // Clear amount when bolton type changes
-                if (field === 'boltonType') {
-                    updatedItem.amount = '';
+            if (item.id !== id) return item;
+            const newItem = { ...item, ...updates };
+
+            // Auto-calculate amount when boltonType changes
+            if (updates.boltonType !== undefined) {
+                const category = boltOnTypeMapping[updates.boltonType];
+                if (category) {
+                    const amount = PublicLawFeeService.calculateBoltOnAmount(category, hearingFee);
+                    newItem.amount = amount !== null ? amount.toFixed(2) : '';
+                    newItem.autoCalculated = true;
+                } else {
+                    newItem.amount = '';
+                    newItem.autoCalculated = false;
                 }
-                return updatedItem;
             }
-            return item;
+            return newItem;
         });
         setBoltonItems(updated);
         updateMultipleFields({ boltonItems: updated });
@@ -111,6 +135,16 @@ const Bolton = () => {
         setBoltonItems(updated);
         updateMultipleFields({ boltonItems: updated });
     };
+
+    // Calculate total bolt-on fees
+    const totalBoltonFee = useMemo(() => {
+        if (isBoltonApplicable !== 'yes' || boltonItems.length === 0) return null;
+        const amounts = boltonItems
+            .filter(item => item.amount)
+            .map(item => parseFloat(item.amount));
+        if (amounts.length === 0) return null;
+        return parseFloat(amounts.reduce((sum, a) => sum + a, 0).toFixed(2));
+    }, [isBoltonApplicable, boltonItems]);
 
     const isFormValid = () => {
         if (!isBoltonApplicable) return false;
@@ -130,17 +164,23 @@ const Bolton = () => {
             boltonItems: boltonItems.map(item => ({
                 boltonType: item.boltonType,
                 amount: parseFloat(item.amount)
-            }))
+            })),
+            totalBoltonFee,
         };
+
+        updateMultipleFields({
+            boltonItems,
+            totalBoltonFee,
+        });
         
         console.log('Bolton Payload:', JSON.stringify(payload, null, 2));
-        // Navigate to next page
+        navigate('/final-summary');
     };
 
     return (
-        <div className="govuk-width-container" style={{ maxWidth: 'calc(100% - 510px)' }}>
+        <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
-                <h1 className="govuk-heading-l">Bolton</h1>
+                <h1 className="govuk-heading-l">Bolt-On</h1>
 
                 <div className="govuk-form-group">
                     <fieldset className="govuk-fieldset">
@@ -191,6 +231,7 @@ const Bolton = () => {
                                 id="category-select"
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
+                                disabled
                             >
                                 {aspectOptions.map((option) => (
                                     <option key={option.value} value={option.value}>
@@ -214,56 +255,26 @@ const Bolton = () => {
                                 </div>
 
                                 {boltonItems.map((item, index) => (
-                                    <div key={item.id} style={{ border: '1px solid #b1b4b6', padding: '20px', marginBottom: '20px' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                                            <h2 className="govuk-heading-m" style={{ margin: 0 }}>Bolton {index + 1}</h2>
-                                            <button
-                                                className="govuk-button govuk-button--warning"
-                                                data-module="govuk-button"
-                                                onClick={() => handleRemoveBolton(item.id)}
-                                                type="button"
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-
-                                        {getValueOptions(selectedCategory).length > 0 && (
-                                            <div className="govuk-form-group">
-                                                <label className="govuk-label govuk-label--m" htmlFor={`bolton-type-${item.id}`}>
-                                                    Bolt-On Type
-                                                </label>
-                                                <select
-                                                    className="govuk-select govuk-!-width-two-thirds"
-                                                    id={`bolton-type-${item.id}`}
-                                                    value={item.boltonType}
-                                                    onChange={(e) => handleUpdateBolton(item.id, 'boltonType', e.target.value)}
-                                                >
-                                                    {getValueOptions(selectedCategory).map((option) => (
-                                                        <option key={option.value} value={option.value}>
-                                                            {option.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        )}
-
-                                        {item.boltonType && (
-                                            <div className="govuk-form-group">
-                                                <label className="govuk-label govuk-label--m" htmlFor={`amount-${item.id}`}>
-                                                    Amount
-                                                </label>
-                                                <input
-                                                    className="govuk-input govuk-!-width-one-third"
-                                                    id={`amount-${item.id}`}
-                                                    type="text"
-                                                    value={item.amount}
-                                                    onChange={(e) => handleUpdateBolton(item.id, 'amount', e.target.value)}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
+                                    <BoltonItem
+                                        key={item.id}
+                                        item={item}
+                                        index={index}
+                                        selectedCategory={selectedCategory}
+                                        onUpdate={handleUpdateBolton}
+                                        onRemove={handleRemoveBolton}
+                                        valueOptions={getValueOptions(selectedCategory)}
+                                    />
                                 ))}
                             </>
+                        )}
+
+                        {totalBoltonFee !== null && (
+                            <div className="govuk-inset-text" style={{ borderLeftColor: '#1d70b8' }}>
+                                <h2 className="govuk-heading-s" style={{ marginBottom: '5px' }}>Total Bolt-On Fees</h2>
+                                <p className="govuk-body-l" style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                                    £{totalBoltonFee.toFixed(2)}
+                                </p>
+                            </div>
                         )}
                     </>
                 )}
