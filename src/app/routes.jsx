@@ -6,7 +6,6 @@ import FeeSchemes from '../pages/FeeSchemes';
 import FamilyAdvocacySchemePage from '../pages/FamilyAdvocacySchemePage';
 import PrivateFamilyLawRepresentationSchemePage from '../pages/PrivateFamilyLawRepresentationSchemePage';
 import PrivateFamilyLawRepresentationFeeTypePage from '../pages/PrivateFamilyLawRepresentationFeeTypePage';
-import CareProceedingsGraduatedFeeSchemePage from '../pages/CareProceedingsGraduatedFeeSchemePage';
 import ProceedingTypes from '../pages/AdvocacyEventType';
 import AdvocatesMeetingsPage from '../pages/advocates-meetings/AdvocatesMeetingsPage';
 import Hearing from '../pages/hearing/HearingPage';
@@ -20,6 +19,16 @@ import CourtTypePage from "../pages/CourtTypePage";
 import LevelOfWorkDonePage from "../pages/LevelOfWorkDonePage";
 import FinalSummaryPage from '../pages/FinalSummaryPage';
 import SubmissionConfirmationPage from '../pages/SubmissionConfirmationPage';
+import CareProceedingsGraduatedFeeSchemePage from '../pages/care-proceedings-graduated-fee-scheme/CareProceedingsGraduatedFeeSchemePage';
+import FeeSchemeFgfCounselAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFgfCounselAdvocacy';
+import FeeSchemeFasAdvocacy from '../pages/care-proceedings-graduated-fee-scheme/FeeSchemeFasAdvocacy';
+import ProfitCosts from '../pages/care-proceedings-graduated-fee-scheme/ProfitCosts.jsx';
+import PersonRepresented from '../pages/care-proceedings-graduated-fee-scheme/PersonRepresented';
+import NumberOfClients from '../pages/care-proceedings-graduated-fee-scheme/NumberOfClients';
+import ConsiderRegionOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderRegionOfProvider.jsx';
+import ConsiderTransferOfProvider from '../pages/care-proceedings-graduated-fee-scheme/ConsiderTransferOfProvider.jsx';
+import ConsiderWorkDone from '../pages/care-proceedings-graduated-fee-scheme/ConsiderWorkDone.jsx';
+import WorkDoneQuantity from '../pages/care-proceedings-graduated-fee-scheme/WorkDoneQuantity.jsx';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -49,6 +58,15 @@ const AppRoutes = () => {
             <Route path="/final-summary" element={<FinalSummaryPage />} />
             <Route path="/submission-confirmation" element={<SubmissionConfirmationPage />} />
             <Route path="/process-complete" element={<ProcessCompletePage />} />
+            <Route path="/fee-scheme-fgf-counsel-advocacy" element={<FeeSchemeFgfCounselAdvocacy />} />
+            <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
+            <Route path="/profit-costs" element={<ProfitCosts />} />
+            <Route path="/person-represented" element={<PersonRepresented />} />
+            <Route path="/number-of-clients" element={<NumberOfClients />} />
+            <Route path="/consider-provider-region" element={<ConsiderRegionOfProvider />} />
+            <Route path="/consider-transfer-provider" element={<ConsiderTransferOfProvider />} />
+            <Route path="/consider-work-done" element={<ConsiderWorkDone />} />
+            <Route path="/work-done-quantity" element={<WorkDoneQuantity />} />
           </Routes>
         </div>
         <SummaryPane />
