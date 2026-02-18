@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import React, {useState} from "react";
 
 const ConsiderRegionOfProvider = () => {
@@ -6,12 +6,12 @@ const ConsiderRegionOfProvider = () => {
     const [selectedRegionOption, setSelectedRegionOption] = useState("");
 
     const options = [
-        { value: '', label: 'Select a region' },
-        { value: 'region1', label: 'region one' },
-        { value: 'region2', label: 'region two' },
-        { value: 'region3', label: 'region three' },
-        { value: 'region4', label: 'region four' },
-        { value: 'region5', label: 'region five' },
+        {value: '', label: 'Select a region'},
+        {value: 'region1', label: 'region one'},
+        {value: 'region2', label: 'region two'},
+        {value: 'region3', label: 'region three'},
+        {value: 'region4', label: 'region four'},
+        {value: 'region5', label: 'region five'},
     ];
 
     const handleOptionChange = (e) => {
@@ -49,7 +49,7 @@ const ConsiderRegionOfProvider = () => {
                     </select>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

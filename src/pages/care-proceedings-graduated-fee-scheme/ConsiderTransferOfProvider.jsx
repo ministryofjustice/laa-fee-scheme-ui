@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import React, {useState} from "react";
 
 const ConsiderTransferOfProvider = () => {
@@ -56,7 +56,7 @@ const ConsiderTransferOfProvider = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

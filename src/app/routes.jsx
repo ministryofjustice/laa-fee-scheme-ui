@@ -58,15 +58,15 @@ const AppRoutes = () => {
             <Route path="/final-summary" element={<FinalSummaryPage />} />
             <Route path="/submission-confirmation" element={<SubmissionConfirmationPage />} />
             <Route path="/process-complete" element={<ProcessCompletePage />} />
-              <Route path="/fee-scheme-fgf-counsel-advocacy" element={<FeeSchemeFgfCounselAdvocacy />} />
-              <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
-              <Route path="/profit-costs" element={<ProfitCosts />} />
-              <Route path="/person-represented" element={<PersonRepresented />} />
-              <Route path="/number-of-clients" element={<NumberOfClients />} />
-              <Route path="/consider-provider-region" element={<ConsiderRegionOfProvider />} />
-              <Route path="/consider-transfer-provider" element={<ConsiderTransferOfProvider />} />
-              <Route path="/consider-work-done" element={<ConsiderWorkDone />} />
-              <Route path="/work-done-quantity" element={<WorkDoneQuantity />} />
+            <Route path="/fee-scheme-fgf-counsel-advocacy" element={<FeeSchemeFgfCounselAdvocacy />} />
+            <Route path="/fee-scheme-fas-advocacy" element={<FeeSchemeFasAdvocacy />} />
+            <Route path="/profit-costs" element={<ProfitCosts />} />
+            <Route path="/person-represented" element={<PersonRepresented />} />
+            <Route path="/number-of-clients" element={<NumberOfClients />} />
+            <Route path="/consider-provider-region" element={<ConsiderRegionOfProvider />} />
+            <Route path="/consider-transfer-provider" element={<ConsiderTransferOfProvider />} />
+            <Route path="/consider-work-done" element={<ConsiderWorkDone />} />
+            <Route path="/work-done-quantity" element={<WorkDoneQuantity />} />
           </Routes>
         </div>
         <SummaryPane />

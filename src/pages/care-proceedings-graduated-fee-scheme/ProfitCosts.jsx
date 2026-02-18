@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import React, {useState} from "react";
 
 const ProfitCosts = () => {
@@ -39,7 +39,7 @@ const ProfitCosts = () => {
                         aria-hidden="false"
                     >
                         For example,
-                        <ul >
+                        <ul>
                             <li>Time spent drafting or considering documents</li>
                             <li>Attending the client to take instructions</li>
                             <li>Attending a hearing as advocate to represent the client</li>
@@ -58,7 +58,7 @@ const ProfitCosts = () => {
                         <input
                             id="cost-input"
                             className="govuk-input"
-                            style={{ maxWidth: '10.81ex' }}
+                            style={{maxWidth: '10.81ex'}}
                             type="Number"
                             name="profit-cost"
                             onChange={handleProfitCost}
@@ -66,7 +66,7 @@ const ProfitCosts = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import React from "react";
 
 const ConsiderWorkDoneQuantity = () => {
@@ -28,7 +28,7 @@ const ConsiderWorkDoneQuantity = () => {
                     </h1>
                 </label>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

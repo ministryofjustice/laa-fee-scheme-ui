@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import React, {useState} from "react";
 
 const NumberOfClients = () => {
@@ -29,7 +29,7 @@ const NumberOfClients = () => {
                     <input
                         id="width-20-input"
                         className="govuk-input"
-                        style={{ maxWidth: '22.86ex' }}
+                        style={{maxWidth: '22.86ex'}}
                         type="number"
                         name="width-20"
                         value={numberOfClients}
@@ -37,7 +37,7 @@ const NumberOfClients = () => {
                     />
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

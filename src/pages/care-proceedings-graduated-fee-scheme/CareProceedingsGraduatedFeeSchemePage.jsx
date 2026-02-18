@@ -124,7 +124,7 @@ const CareProceedingsGraduatedFeeSchemePage = () => {
                     </fieldset>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem' }}>
+                <div style={{display: 'flex', justifyContent: 'space-between', gap: '4rem'}}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"
