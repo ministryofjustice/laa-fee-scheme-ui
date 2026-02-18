@@ -1,16 +1,16 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import NavButton from "../../components/NavButton";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
-import AppContext from "../../context/AppContext";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 import FeeTotal from "../../components/FeeTotal";
 import PageHeading from "../../components/PageHeading";
 
 const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
 
-  const { addFee, getFeeTotal } = useContext(AppContext);
+  const { addFee, getFeeTotal } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 

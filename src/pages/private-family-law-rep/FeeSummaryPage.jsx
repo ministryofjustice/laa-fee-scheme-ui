@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import PageHeading from "../../components/PageHeading";
 import PageSubHeading from "../../components/PageSubHeading";
-import AppContext from "../../context/AppContext";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 import { formatCurrency } from "../../utils/formatUtil";
 
 const TableRow = ({ label, value, isBold = false }) => {
@@ -22,7 +21,7 @@ const TableRow = ({ label, value, isBold = false }) => {
 };
 
 const FeeSummaryPage = () => {
-  const { feeType, feeData, getFeeTotal } = useContext(AppContext);
+  const { feeType, feeData, getFeeTotal } = useSchemeUIContext();
 
   return (
     <div className="govuk-width-container">

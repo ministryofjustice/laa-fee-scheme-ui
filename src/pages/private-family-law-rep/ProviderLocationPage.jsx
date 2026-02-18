@@ -6,12 +6,12 @@ import PageHeading from "../../components/PageHeading";
 import FeeTotal from "../../components/FeeTotal";
 import NavButton from "../../components/NavButton";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
-import AppContext from "../../context/AppContext";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 
 const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
 
-  const { addFee, getFeeTotal } = useContext(AppContext);
+  const { addFee, getFeeTotal } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 

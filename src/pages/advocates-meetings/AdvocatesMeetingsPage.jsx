@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AdvocatesMeetingItem from './AdvocatesMeetingItem';
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 
 const AdvocatesMeetingsPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { updateMultipleFields } = useSchemeUIContext();
     const [attendedAdvocatesMeetings, setAttendedAdvocatesMeetings] = useState('');
     const [advocatesMeetings, setAdvocatesMeetings] = useState([]);
 
@@ -17,6 +19,12 @@ const AdvocatesMeetingsPage = () => {
         setAttendedAdvocatesMeetings(value);
         if (value === 'no') {
             setAdvocatesMeetings([]);
+            updateMultipleFields({
+                attendedAdvocatesMeetings: value,
+                advocatesMeetings: []
+            });
+        } else {
+            updateMultipleFields({ attendedAdvocatesMeetings: value });
         }
     };
 
@@ -31,17 +39,23 @@ const AdvocatesMeetingsPage = () => {
             exceptionalTravelClaimed: '',
             exceptionalTravelAmount: ''
         };
-        setAdvocatesMeetings([...advocatesMeetings, newMeeting]);
+        const updatedMeetings = [...advocatesMeetings, newMeeting];
+        setAdvocatesMeetings(updatedMeetings);
+        updateMultipleFields({ advocatesMeetings: updatedMeetings });
     };
 
     const handleUpdateMeeting = (id, updatedMeeting) => {
-        setAdvocatesMeetings(advocatesMeetings.map(meeting => 
+        const updatedMeetings = advocatesMeetings.map(meeting => 
             meeting.id === id ? { ...meeting, ...updatedMeeting } : meeting
-        ));
+        );
+        setAdvocatesMeetings(updatedMeetings);
+        updateMultipleFields({ advocatesMeetings: updatedMeetings });
     };
 
     const handleRemoveMeeting = (id) => {
-        setAdvocatesMeetings(advocatesMeetings.filter(meeting => meeting.id !== id));
+        const filteredMeetings = advocatesMeetings.filter(meeting => meeting.id !== id);
+        setAdvocatesMeetings(filteredMeetings);
+        updateMultipleFields({ advocatesMeetings: filteredMeetings });
     };
 
     const handleContinue = () => {
@@ -164,7 +178,7 @@ const AdvocatesMeetingsPage = () => {
                     </>
                 )}
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4rem', marginTop: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem', marginTop: '2rem' }}>
                     <button
                         className="govuk-button govuk-button--secondary"
                         data-module="govuk-button"

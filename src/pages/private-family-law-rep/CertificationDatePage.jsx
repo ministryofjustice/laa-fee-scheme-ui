@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import ButtonContainer from "../../components/ButtonContainer";
 import NavButton from "../../components/NavButton";
 import PageHeading from "../../components/PageHeading";
-import AppContext from "../../context/AppContext";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
 
   const [certificationDate, setCertificationDate] = useState("");
 
-  const { addFee } = useContext(AppContext);
+  const { addFee } = useSchemeUIContext();
 
   const handleCertificationDateChange = (e) => {
     setCertificationDate(e.target.value);

@@ -1,0 +1,63 @@
+.fee-schemes-container {
+  max-width: 1200px;
+}
+
+.fee-schemes-card-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fee-schemes-card-col {
+  flex: 1 1 33%;
+  min-width: 300px;
+  max-width: 33%;
+  box-sizing: border-box;
+  padding: 0 1rem 2rem 0;
+}
+
+.fee-schemes-card {
+  border: 1px solid #b1b4b6;
+  border-radius: 12px;
+  padding: 1.2rem;
+  background: #fff;
+  cursor: pointer;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  outline: none;
+}
+
+.fee-schemes-card.selected {
+  border: 4px solid #1d70b8;
+  background: #eaf3fc;
+  box-shadow: 0 8px 24px 0 rgba(29,112,184,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+  outline: 2px solid #1d70b8;
+}
+
+.fee-schemes-card:hover, .fee-schemes-card:focus {
+  box-shadow: 0 12px 32px 0 rgba(29,112,184,0.22), 0 2px 8px 0 rgba(0,0,0,0.12);
+}
+
+.fee-schemes-actions-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.fee-schemes-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.fee-schemes-heading {
+  margin-bottom: 1rem;
+}
+
+.fee-schemes-desc {
+}
