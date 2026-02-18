@@ -1,17 +1,16 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import ButtonContainer from "../../components/ButtonContainer";
 import PageHeading from "../../components/PageHeading";
-import FeeTotal from "../../components/FeeTotal";
 import NavButton from "../../components/NavButton";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
-import { useSchemeUIContext } from '../../context/SchemeUIContext';
+import { useSchemeUIContext } from "../../context/SchemeUIContext";
 
 const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
 
-  const { addFee, getFeeTotal } = useSchemeUIContext();
+  const { formData, updateFormData } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -19,20 +18,27 @@ const ProviderLocationDatePage = () => {
     {
       value: "london",
       label: "London",
+      fee: 1000
     },
     {
       value: "nonLondon",
       label: "Non-London",
+      fee: 750
     },
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+    const value = e.target.value;
+    setSelectedRadio(value);
+    updateFormData("providerLocation", value);
+    
   };
 
   const handleContinue = () => {
-    const providerLocationFee = selectedRadio === "london" ? 200 : 150;
-    addFee("Provider Location Fee", providerLocationFee);
+   const selectedOption = options.find(
+      (option) => option.value === selectedRadio,
+    );
+    updateFormData("calculatedFee", (formData.calculatedFee || 0) + selectedOption.fee);
     navigate("/private-family-law-representation-fee-type");
   };
 
@@ -42,8 +48,6 @@ const ProviderLocationDatePage = () => {
         <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
         </PageHeading>
-
-        <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
           name="providerLocation"

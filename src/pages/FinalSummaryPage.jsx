@@ -38,6 +38,13 @@ const FinalSummaryPage = () => {
         'OTHER': 'Other'
     };
 
+    const pflrsProceedingTypesLabels = {
+        'children': 'Children',
+        'finance': 'Finance',
+        'domesticAbuse': 'Domestic Abuse',
+        'excluded': 'Excluded from PFLRS'
+    };
+
     const boltonTypeLabels = (type) =>
         type ? type.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
 
@@ -85,6 +92,21 @@ const FinalSummaryPage = () => {
                             </dd>
                         </div>
                     )}
+
+                    {formData.pflrsProceedingsType && (
+                        <div className="govuk-summary-list__row">
+                            <dt className="govuk-summary-list__key">Proceedings Type</dt>
+                            <dd className="govuk-summary-list__value">
+                                {pflrsProceedingTypesLabels[formData.pflrsProceedingsType] || formData.pflrsProceedingsType}
+                            </dd>
+                            <dd className="govuk-summary-list__actions">
+                                <a className="govuk-link" href="#" onClick={(e) => { e.preventDefault(); navigate('/private-family-law-representation-scheme'); }}>
+                                    Change
+                                </a>
+                            </dd>
+                        </div>
+                    )}
+
                 </dl>
 
                 {/* Hearing Details */}

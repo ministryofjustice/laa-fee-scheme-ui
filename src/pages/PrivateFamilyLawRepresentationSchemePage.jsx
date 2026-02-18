@@ -5,13 +5,16 @@ import ButtonContainer from "../components/ButtonContainer";
 import NavButton from "../components/NavButton";
 import PageHeading from "../components/PageHeading";
 import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import { useSchemeUIContext } from "../context/SchemeUIContext";
 
 const PrivateFamilyLawRepresentationSchemePage = () => {
   const navigate = useNavigate();
 
+  const { updateFormData } = useSchemeUIContext();
+
   const [selectedRadio, setSelectedRadio] = useState("");
 
-  const options = [
+   const options = [
     {
       value: "children",
       label: "Children",
@@ -31,7 +34,9 @@ const PrivateFamilyLawRepresentationSchemePage = () => {
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+    const value = e.target.value;
+    setSelectedRadio(value);
+    updateFormData("pflrsProceedingsType", value);
   };
 
   const handleContinue = () => {

@@ -13,10 +13,10 @@ const App = () => {
         <div style={{ display: "flex", minHeight: "calc(100vh - 170px)" }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <AppRoutes />
-            <Footer />
           </div>
           <SummaryPane />
         </div>
+        <Footer />
       </BrowserRouter>
     </SchemeUIProvider>
   );

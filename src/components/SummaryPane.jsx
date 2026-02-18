@@ -1,13 +1,27 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSchemeUIContext } from '../context/SchemeUIContext';
+import { formatDate } from '../utils/formatUtil';
+
+const SummaryPaneRow = ({label, value}) => {
+    return (
+                value && (
+                <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
+                        {label}
+                    </strong>
+                    <span className="govuk-body-s" style={{ textAlign: 'right' }}>{value}</span>
+                </div>
+            )
+        )
+}
 
 const SummaryPane = () => {
     const { formData } = useSchemeUIContext();
     const location = useLocation();
 
     // Hide summary pane on these routes
-    const hiddenRoutes = ['/', '/fee-schemes', '/family-advocacy-scheme', '/final-summary'];
+    const hiddenRoutes = ['/', '/fee-schemes', '/family-advocacy-scheme', '/final-summary', '/fee-summary'];
     if (hiddenRoutes.includes(location.pathname)) {
         return null;
     }
@@ -44,6 +58,24 @@ const SummaryPane = () => {
         'OTHER': 'Other'
     };
 
+    const providerLocationLabels = {
+        'london': 'London',
+        'nonLondon': 'Non-London'
+    };
+
+    const pflrsProceedingTypesLabels = {
+        'children': 'Children',
+        'finance': 'Finance',
+        'domesticAbuse': 'Domestic Abuse',
+        'excluded': 'Excluded from PFLRS'
+    };
+
+    const feeTypeLabels = {
+        'fixed': 'Fixed',
+        'hourlyRate': 'Hourly Rate'
+    };
+
+
     const hasAnyData = formData.aspectOfWork ||
         formData.proceedingType ||
         formData.hearingDate ||
@@ -59,7 +91,9 @@ const SummaryPane = () => {
         formData.boltonCategory ||
         (formData.boltonItems && formData.boltonItems.length > 0) ||
         formData.attendedAdvocatesMeetings ||
-        (formData.advocatesMeetings && formData.advocatesMeetings.length > 0);
+        (formData.advocatesMeetings && formData.advocatesMeetings.length > 0) ||
+        formData.pflrsProceedingsType || formData.certificationDate ||
+        formData.providerLocation || formData.feeType
 
     if (!hasAnyData) {
         return null;
@@ -96,6 +130,7 @@ const SummaryPane = () => {
                 </div>
             )}
 
+
             {formData.proceedingType && (
                 <div style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #b1b4b6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
@@ -106,7 +141,6 @@ const SummaryPane = () => {
                     </span>
                 </div>
             )}
-
             {formData.hearingDate && (
                 <div style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #b1b4b6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
@@ -262,6 +296,12 @@ const SummaryPane = () => {
                     <span className="govuk-body-s" style={{ textAlign: 'right' }}>{formData.advocatesMeetings.length} meeting(s)</span>
                 </div>
             )}
+
+            <SummaryPaneRow label="Proceedings Type:" value={pflrsProceedingTypesLabels[formData.pflrsProceedingsType] || formData.pflrsProceedingsType} />
+            <SummaryPaneRow label="Certification Date:" value={formatDate(formData.certificationDate)} />
+            <SummaryPaneRow label="Provider Location:" value={providerLocationLabels[formData.providerLocation]|| formData.providerLocation} />
+            <SummaryPaneRow label="Fee Type:" value={feeTypeLabels[formData.feeType]|| formData.feeType} />
+
 
             {formData.calculatedFee !== null && formData.calculatedFee !== undefined && (
                 <div style={{

@@ -42,6 +42,8 @@ export const SchemeUIProvider = ({ children }) => {
     // Advocates Meetings Page
     attendedAdvocatesMeetings: "",
     advocatesMeetings: [],
+
+    certificationDate: "",
   });
 
   const updateFormData = (field, value) => {
@@ -79,6 +81,7 @@ export const SchemeUIProvider = ({ children }) => {
       totalBoltonFee: null,
       attendedAdvocatesMeetings: "",
       advocatesMeetings: [],
+      certificationDate: "",
     });
   };
 

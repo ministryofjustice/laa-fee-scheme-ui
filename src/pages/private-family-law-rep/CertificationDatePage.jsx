@@ -4,21 +4,22 @@ import BackButton from "../../components/BackButton";
 import ButtonContainer from "../../components/ButtonContainer";
 import NavButton from "../../components/NavButton";
 import PageHeading from "../../components/PageHeading";
-import { useSchemeUIContext } from '../../context/SchemeUIContext';
+import { useSchemeUIContext } from "../../context/SchemeUIContext";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
 
+  const { updateFormData } = useSchemeUIContext();
+
   const [certificationDate, setCertificationDate] = useState("");
 
-  const { addFee } = useSchemeUIContext();
-
   const handleCertificationDateChange = (e) => {
-    setCertificationDate(e.target.value);
+    const value = e.target.value;
+    setCertificationDate(value);
+    updateFormData("certificationDate", value);
   };
 
   const handleContinue = () => {
-    addFee("Certification Date Fee", 100);
     navigate("/provider-location");
   };
 

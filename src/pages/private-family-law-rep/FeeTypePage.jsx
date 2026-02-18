@@ -11,7 +11,7 @@ import { useSchemeUIContext } from '../../context/SchemeUIContext';
 const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
 
-  const { getFeeTotal, setFeeType } = useSchemeUIContext();
+  const { updateFormData } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -19,37 +19,34 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
     {
       value: "profitCostsBelow",
       label: "Profit costs < 3x Fixed Fee",
-      feeType: "Fixed",
+      feeType: "fixed",
     },
     {
       value: "profitCostsAbove",
       label: "Profit costs > 3x Fixed Fee",
-      feeType: "Hourly Rate",
+      feeType: "hourlyRate",
     },
     {
       value: "solicitorInstructed",
       label: "Solicitor instructed for < 24 hours",
-      feeType: "Hourly Rate",
+      feeType: "hourlyRate",
     },
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+    const value = e.target.value;
+    setSelectedRadio(value);
+    const selectedOption = options.find(
+      (option) => option.value === value,
+    );
+    updateFormData("feeType", selectedOption.feeType);
   };
 
   const handleContinue = () => {
-    const selectedOption = options.find(
-      (option) => option.value === selectedRadio,
-    );
-
-    const { value: selectedValue, feeType } = selectedOption;
-
-    setFeeType(feeType);
-
-    if (selectedValue === "profitCostsBelow") {
+    if (selectedRadio === "profitCostsBelow") {
       navigate("/bill-type");
     } else {
-      navigate("/calculate-fees");
+      navigate('/fee-summary');
     }
   };
 
@@ -59,8 +56,6 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
         <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
         </PageHeading>
-
-        <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
           name="feeType"
