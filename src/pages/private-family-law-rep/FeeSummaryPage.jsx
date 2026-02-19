@@ -43,6 +43,25 @@ const FeeSummaryPage = () => {
     hourlyRate: "Hourly Rate",
   };
 
+
+    const billTypeLabels = {
+        'finalBill': 'Final Bill',
+        'transfer': 'Transfer'
+    };
+    
+    const courtTypeLabels = {
+        'lawJusticeMagsCourt': 'Law Justice or Magistrates Court',
+        'districtJudgeCountyCourt' : 'District Judge or Country Court',
+        'highCourt': 'High Court',
+        'circuitDistrictCostsJudge' : 'District Judge / District Judge / Costs Judge',
+        'other' : 'Other'
+    };
+
+    const levelOfWorkDoneLabels = {
+        'legalHelp': 'Legal Help (higher)',
+        'legalRep': 'Legal Representation',
+    }
+
   const handleSubmit = () => {
     resetFormData();
     navigate("/submission-confirmation");
@@ -136,6 +155,75 @@ const FeeSummaryPage = () => {
               )}
             </dl>
 
+            <dl className="govuk-summary-list">
+              {formData.billType && (
+                <div className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">Bill Type</dt>
+                  <dd className="govuk-summary-list__value">
+                    {billTypeLabels[formData.billType] || formData.billType}
+                  </dd>
+                  <dd className="govuk-summary-list__actions">
+                    <a
+                      className="govuk-link"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/bill-type");
+                      }}
+                    >
+                      Change
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            <dl className="govuk-summary-list">
+              {formData.courtType && (
+                <div className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">Court Type</dt>
+                  <dd className="govuk-summary-list__value">
+                    {courtTypeLabels[formData.courtType] || formData.courtType}
+                  </dd>
+                  <dd className="govuk-summary-list__actions">
+                    <a
+                      className="govuk-link"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/court-type");
+                      }}
+                    >
+                      Change
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            <dl className="govuk-summary-list">
+              {formData.levelOfWorkDone && (
+                <div className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">Level Of Work Done</dt>
+                  <dd className="govuk-summary-list__value">
+                    {levelOfWorkDoneLabels[formData.levelOfWorkDone] || formData.levelOfWorkDone}
+                  </dd>
+                  <dd className="govuk-summary-list__actions">
+                    <a
+                      className="govuk-link"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/level-of-work-done");
+                      }}
+                    >
+                      Change
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+
             {/* Fee Details */}
             <h2 className="govuk-heading-m">Fee details</h2>
             <dl className="govuk-summary-list">
@@ -151,7 +239,7 @@ const FeeSummaryPage = () => {
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate("/fee-type");
+                        navigate("/private-family-law-representation-fee-type");
                       }}
                     >
                       Change
@@ -185,7 +273,7 @@ const FeeSummaryPage = () => {
                     className="govuk-heading-l"
                     style={{ color: "#ffffff", marginBottom: 0 }}
                   >
-                    {formatCurrency(formData.calculatedFee)}
+                    {formatCurrency((formData.calculatedFee + (formData.courtTypeFee || 0) + (formData.levelOfWorkFee || 0)))}
                   </strong>
                 </div>
               )}

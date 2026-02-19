@@ -10,7 +10,7 @@ import { useSchemeUIContext } from "../../context/SchemeUIContext";
 const ProviderLocationDatePage = () => {
   const navigate = useNavigate();
 
-  const { formData, updateFormData } = useSchemeUIContext();
+  const { updateFormData } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -31,14 +31,13 @@ const ProviderLocationDatePage = () => {
     const value = e.target.value;
     setSelectedRadio(value);
     updateFormData("providerLocation", value);
-    
   };
 
   const handleContinue = () => {
    const selectedOption = options.find(
       (option) => option.value === selectedRadio,
     );
-    updateFormData("calculatedFee", (formData.calculatedFee || 0) + selectedOption.fee);
+    updateFormData("calculatedFee", selectedOption.fee);
     navigate("/private-family-law-representation-fee-type");
   };
 

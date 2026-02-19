@@ -75,6 +75,23 @@ const SummaryPane = () => {
         'hourlyRate': 'Hourly Rate'
     };
 
+    const billTypeLabels = {
+        'finalBill': 'Final Bill',
+        'transfer': 'Transfer'
+    };
+    
+    const courtTypeLabels = {
+        'lawJusticeMagsCourt': 'Law Justice or Magistrates Court',
+        'districtJudgeCountyCourt' : 'District Judge or Country Court',
+        'highCourt': 'High Court',
+        'circuitDistrictCostsJudge' : 'District Judge / District Judge / Costs Judge',
+        'other' : 'Other'
+    };
+
+    const levelOfWorkDoneLabels = {
+        'legalHelp': 'Legal Help (higher)',
+        'legalRep': 'Legal Representation',
+    }
 
     const hasAnyData = formData.aspectOfWork ||
         formData.proceedingType ||
@@ -233,6 +250,42 @@ const SummaryPane = () => {
                             </strong>
                         </div>
                     )}
+
+                    {formData.interimHearingFees && formData.interimHearingFees.length > 0 && (
+                        <>
+                            <strong className="govuk-body-s" style={{ display: 'block', marginBottom: '5px', color: '#1d70b8' }}>
+                                Hearing Fee:
+                            </strong>
+                            <div style={{ marginBottom: '10px' }}>
+                                {formData.interimHearingFees.map((fee, idx) => (
+                                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                                        <span className="govuk-body-s">Interim Hearing {idx + 1}:</span>
+                                        <span className="govuk-body-s">
+                                            {fee !== null ? `£${fee.toFixed(2)}` : '—'}
+                                        </span>
+                                    </div>
+                                ))}
+                                <div style={{ borderTop: '1px solid #b1b4b6', marginTop: '8px', paddingTop: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong className="govuk-body-s">Total:</strong>
+                                    <strong className="govuk-body-s" style={{ fontSize: '1.1rem' }}>
+                                        £{formData.calculatedFee.toFixed(2)}
+                                    </strong>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    { formData.courtTypeFee && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <strong className="govuk-body-s" style={{ color: '#1d70b8', marginBottom: 0 }}>
+                                Court Type Fee:
+                            </strong>
+                            <strong className="govuk-body-s" style={{ fontSize: '1.1rem', color: '#0b0c0c', marginBottom: 0 }}>
+                                £{formData.courtTypeFee.toFixed(2)}
+                            </strong>
+                        </div>
+                     ) }
+
                 </div>
             )}
 
@@ -301,7 +354,9 @@ const SummaryPane = () => {
             <SummaryPaneRow label="Certification Date:" value={formatDate(formData.certificationDate)} />
             <SummaryPaneRow label="Provider Location:" value={providerLocationLabels[formData.providerLocation]|| formData.providerLocation} />
             <SummaryPaneRow label="Fee Type:" value={feeTypeLabels[formData.feeType]|| formData.feeType} />
-
+            <SummaryPaneRow label="Bill Type:" value={billTypeLabels[formData.billType]|| formData.billType} />
+            <SummaryPaneRow label="Court Type:" value={courtTypeLabels[formData.courtType]|| formData.courtType} />
+            <SummaryPaneRow label="Level Of Work Done:" value={levelOfWorkDoneLabels[formData.levelOfWorkDone]|| formData.levelOfWorkDone} />
 
             {formData.calculatedFee !== null && formData.calculatedFee !== undefined && (
                 <div style={{
@@ -317,7 +372,7 @@ const SummaryPane = () => {
                         Total:
                     </strong>
                     <strong className="govuk-body" style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '1.25rem', marginBottom: 0 }}>
-                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount).toFixed(2)}
+                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount + (formData.courtTypeFee || 0) + (formData.levelOfWorkFee || 0)).toFixed(2)}
                     </strong>
                 </div>
             )}

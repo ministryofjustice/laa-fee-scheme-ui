@@ -10,7 +10,7 @@ import PageHeading from "../../components/PageHeading";
 const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
 
-  const { addFee, getFeeTotal } = useSchemeUIContext();
+  const { updateFormData } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -18,7 +18,6 @@ const LevelOfWorkDonePage = () => {
     {
       value: "legalHelp",
       label: "Legal Help (higher)",
-      fee: 250,
     },
     {
       value: "legalRep",
@@ -28,15 +27,13 @@ const LevelOfWorkDonePage = () => {
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+    const value = e.target.value;
+    setSelectedRadio(value);
+    updateFormData("levelOfWorkDone", value);
   };
 
   const handleContinue = () => {
-    const selectedOption = options.find(
-      (option) => option.value === selectedRadio,
-    );
-    addFee("Level Of Work Fee", selectedOption.fee);
-    navigate("/calculate-fees");
+    navigate("/fee-summary");
   };
 
   return (
@@ -45,8 +42,6 @@ const LevelOfWorkDonePage = () => {
         <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
         </PageHeading>
-
-        <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
           name="levelOfWork"

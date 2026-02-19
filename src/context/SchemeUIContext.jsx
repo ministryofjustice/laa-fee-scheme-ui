@@ -32,6 +32,8 @@ export const SchemeUIProvider = ({ children }) => {
     calculatedFee: null,
     interimHearingFees: [],
     totalInterimFee: null,
+    courtTypeFee: null,
+    levelOfWorkFee: null,
 
     // Bolton Page
     isBoltonApplicable: "",
@@ -75,6 +77,8 @@ export const SchemeUIProvider = ({ children }) => {
       calculatedFee: null,
       interimHearingFees: [],
       totalInterimFee: null,
+      courtTypeFee: null,
+      levelOfWorkFee: null,
       isBoltonApplicable: "",
       boltonCategory: "",
       boltonItems: [],
@@ -85,30 +89,9 @@ export const SchemeUIProvider = ({ children }) => {
     });
   };
 
-  const [feeData, setFeeData] = useState({});
-  const [feeType, setFeeType] = useState("");
-
-  const addFee = (fieldName, amount) => {
-    setFeeData({ ...feeData, [fieldName]: amount });
-  };
-
-  const hourlyRateFilter = ([key]) =>
-    ["Certification Date Fee", "Provider Location Fee"].includes(key);
-
-  const getFeeTotal = () => {
-    const feeItems =
-      feeType === "Fixed"
-        ? Object.values(feeData)
-        : Object.entries(feeData)
-            .filter(hourlyRateFilter)
-            .map(([, value]) => value);
-
-    return feeItems.reduce((sum, value) => sum + value, 0);
-  };
-
   return (
     <SchemeUIContext.Provider
-      value={{ formData, updateFormData, updateMultipleFields, resetFormData, feeData, addFee, getFeeTotal, feeType, setFeeType }}
+      value={{ formData, updateFormData, updateMultipleFields, resetFormData }}
     >
       {children}
     </SchemeUIContext.Provider>
