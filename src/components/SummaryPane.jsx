@@ -253,30 +253,6 @@ const SummaryPane = () => {
                         </div>
                     )}
 
-                    {formData.interimHearingFees && formData.interimHearingFees.length > 0 && (
-                        <>
-                            <strong className="govuk-body-s" style={{ display: 'block', marginBottom: '5px', color: '#1d70b8' }}>
-                                Hearing Fee:
-                            </strong>
-                            <div style={{ marginBottom: '10px' }}>
-                                {formData.interimHearingFees.map((fee, idx) => (
-                                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                                        <span className="govuk-body-s">Interim Hearing {idx + 1}:</span>
-                                        <span className="govuk-body-s">
-                                            {fee !== null ? `£${fee.toFixed(2)}` : '—'}
-                                        </span>
-                                    </div>
-                                ))}
-                                <div style={{ borderTop: '1px solid #b1b4b6', marginTop: '8px', paddingTop: '8px', display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong className="govuk-body-s">Total:</strong>
-                                    <strong className="govuk-body-s" style={{ fontSize: '1.1rem' }}>
-                                        £{formData.calculatedFee.toFixed(2)}
-                                    </strong>
-                                </div>
-                            </div>
-                        </>
-                    )}
-
                     { formData.courtTypeFee && (
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <strong className="govuk-body-s" style={{ color: '#1d70b8', marginBottom: 0 }}>
