@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import NavButton from "../components/NavButton";
-import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import NavButton from "../../components/NavButton";
+import PageHeading from "../../components/PageHeading";
+import RadioButtonsPanel from "../../components/RadioButtonsPanel";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
 
 const PrivateFamilyLawRepresentationFeeTypePage = () => {
   const navigate = useNavigate();
 
+  const { updateFormData } = useSchemeUIContext();
+
   const [selectedRadio, setSelectedRadio] = useState("");
-  const [feeType, setFeeType] = useState("");
 
   const options = [
     {
@@ -29,31 +33,28 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+    const value = e.target.value;
+    setSelectedRadio(value);
+    const selectedOption = options.find(
+      (option) => option.value === value,
+    );
+    updateFormData("feeType", selectedOption.feeType);
   };
 
   const handleContinue = () => {
-    const selectedOption = options.find(
-      (option) => option.value === selectedRadio,
-    );
-
-    const { value: selectedValue, feeType } = selectedOption;
-
-    setFeeType(feeType);
-
-    if (selectedValue === "profitCostsBelow") {
+    if (selectedRadio === "profitCostsBelow") {
       navigate("/bill-type");
     } else {
-      navigate("/calculate-fees");
+      navigate('/fee-summary');
     }
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
 
         <RadioButtonsPanel
           name="feeType"
@@ -62,12 +63,13 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
           selectedRadio={selectedRadio}
           handleRadioChange={handleRadioChange}
         />
-        <div className="govuk-button-group">
+        
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!selectedRadio}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

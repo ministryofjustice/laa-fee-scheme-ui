@@ -1,13 +1,27 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSchemeUIContext } from '../context/SchemeUIContext';
+import { formatDate } from '../utils/formatUtil';
+
+const SummaryPaneRow = ({label, value}) => {
+    return (
+                value && (
+                <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
+                        {label}
+                    </strong>
+                    <span className="govuk-body-s" style={{ textAlign: 'right' }}>{value}</span>
+                </div>
+            )
+        )
+}
 
 const SummaryPane = () => {
     const { formData } = useSchemeUIContext();
     const location = useLocation();
 
     // Hide summary pane on these routes
-    const hiddenRoutes = ['/', '/fee-schemes', '/family-advocacy-scheme', '/final-summary'];
+    const hiddenRoutes = ['/', '/fee-schemes', '/family-advocacy-scheme', '/final-summary', '/fee-summary'];
     if (hiddenRoutes.includes(location.pathname)) {
         return null;
     }
@@ -44,6 +58,41 @@ const SummaryPane = () => {
         'OTHER': 'Other'
     };
 
+    const providerLocationLabels = {
+        'london': 'London',
+        'nonLondon': 'Non-London'
+    };
+
+    const pflrsProceedingTypesLabels = {
+        'children': 'Children',
+        'finance': 'Finance',
+        'domesticAbuse': 'Domestic Abuse',
+        'excluded': 'Excluded from PFLRS'
+    };
+
+    const feeTypeLabels = {
+        'fixed': 'Fixed',
+        'hourlyRate': 'Hourly Rate'
+    };
+
+    const billTypeLabels = {
+        'finalBill': 'Final Bill',
+        'transfer': 'Transfer'
+    };
+    
+    const courtTypeLabels = {
+        'lawJusticeMagsCourt': 'Law Justice or Magistrates Court',
+        'districtJudgeCountyCourt' : 'District Judge or Country Court',
+        'highCourt': 'High Court',
+        'circuitDistrictCostsJudge' : 'District Judge / District Judge / Costs Judge',
+        'other' : 'Other'
+    };
+
+    const levelOfWorkDoneLabels = {
+        'legalHelp': 'Legal Help (higher)',
+        'legalRep': 'Legal Representation',
+    }
+
     const hasAnyData = formData.aspectOfWork ||
         formData.proceedingType ||
         formData.hearingDate ||
@@ -59,7 +108,11 @@ const SummaryPane = () => {
         formData.boltonCategory ||
         (formData.boltonItems && formData.boltonItems.length > 0) ||
         formData.attendedAdvocatesMeetings ||
-        (formData.advocatesMeetings && formData.advocatesMeetings.length > 0);
+        (formData.advocatesMeetings && formData.advocatesMeetings.length > 0) ||
+        formData.certificationDate || formData.pflrsProceedingsType ||
+        formData.providerLocation || formData.feeType ||
+        formData.billType || formData.courtType ||
+        formData.levelOfWorkDone;
 
     if (!hasAnyData) {
         return null;
@@ -96,6 +149,7 @@ const SummaryPane = () => {
                 </div>
             )}
 
+
             {formData.proceedingType && (
                 <div style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #b1b4b6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
@@ -106,7 +160,6 @@ const SummaryPane = () => {
                     </span>
                 </div>
             )}
-
             {formData.hearingDate && (
                 <div style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #b1b4b6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <strong className="govuk-body-s" style={{ marginRight: '10px', flexShrink: 0 }}>
@@ -199,6 +252,18 @@ const SummaryPane = () => {
                             </strong>
                         </div>
                     )}
+
+                    { formData.courtTypeFee && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <strong className="govuk-body-s" style={{ color: '#1d70b8', marginBottom: 0 }}>
+                                Court Type Fee:
+                            </strong>
+                            <strong className="govuk-body-s" style={{ fontSize: '1.1rem', color: '#0b0c0c', marginBottom: 0 }}>
+                                £{formData.courtTypeFee.toFixed(2)}
+                            </strong>
+                        </div>
+                     ) }
+
                 </div>
             )}
 
@@ -263,6 +328,14 @@ const SummaryPane = () => {
                 </div>
             )}
 
+            <SummaryPaneRow label="Proceedings Type:" value={pflrsProceedingTypesLabels[formData.pflrsProceedingsType] || formData.pflrsProceedingsType} />
+            <SummaryPaneRow label="Certification Date:" value={formatDate(formData.certificationDate)} />
+            <SummaryPaneRow label="Provider Location:" value={providerLocationLabels[formData.providerLocation]|| formData.providerLocation} />
+            <SummaryPaneRow label="Fee Type:" value={feeTypeLabels[formData.feeType]|| formData.feeType} />
+            <SummaryPaneRow label="Bill Type:" value={billTypeLabels[formData.billType]|| formData.billType} />
+            <SummaryPaneRow label="Court Type:" value={courtTypeLabels[formData.courtType]|| formData.courtType} />
+            <SummaryPaneRow label="Level Of Work Done:" value={levelOfWorkDoneLabels[formData.levelOfWorkDone]|| formData.levelOfWorkDone} />
+
             {formData.calculatedFee !== null && formData.calculatedFee !== undefined && (
                 <div style={{
                     marginTop: '15px',
@@ -277,7 +350,7 @@ const SummaryPane = () => {
                         Total:
                     </strong>
                     <strong className="govuk-body" style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '1.25rem', marginBottom: 0 }}>
-                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount).toFixed(2)}
+                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount + (formData.courtTypeFee || 0)).toFixed(2)}
                     </strong>
                 </div>
             )}

@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import NavButton from "../components/NavButton";
+import BackButton from "../../components/BackButton";
+import ButtonContainer from "../../components/ButtonContainer";
+import NavButton from "../../components/NavButton";
+import PageHeading from "../../components/PageHeading";
+import { useSchemeUIContext } from "../../context/SchemeUIContext";
 
 const CertificationDatePage = () => {
   const navigate = useNavigate();
+
+  const { updateFormData } = useSchemeUIContext();
+
   const [certificationDate, setCertificationDate] = useState("");
 
   const handleCertificationDateChange = (e) => {
-    setCertificationDate(e.target.value);
+    const value = e.target.value;
+    setCertificationDate(value);
+    updateFormData("certificationDate", value);
   };
 
   const handleContinue = () => {
@@ -18,9 +26,9 @@ const CertificationDatePage = () => {
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
 
         <div className="govuk-form-group">
           <fieldset
@@ -29,9 +37,9 @@ const CertificationDatePage = () => {
             aria-describedby="cerification-date-hint"
           >
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 className="govuk-fieldset__heading">
+              <h2 className="govuk-fieldset__heading">
                 What is the certification date?
-              </h1>
+              </h2>
             </legend>
             <div className="govuk-date-input" id="cerification-date">
               <div className="govuk-date-input__item">
@@ -50,12 +58,12 @@ const CertificationDatePage = () => {
           </fieldset>
         </div>
 
-        <div className="govuk-button-group">
+        <ButtonContainer>
           <BackButton />
           <NavButton onClick={handleContinue} disabled={!certificationDate}>
             Continue
           </NavButton>
-        </div>
+        </ButtonContainer>
       </main>
     </div>
   );

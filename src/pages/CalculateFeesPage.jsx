@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 
-const CalculateHourlyRatesPage = () => {
+const CalculateFeesPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const title = location.state?.title || "Private Family Law Representation Scheme (PFLRS)";
@@ -26,4 +26,4 @@ const CalculateHourlyRatesPage = () => {
   );
 }
 
-export default CalculateHourlyRatesPage;
+export default CalculateFeesPage;
