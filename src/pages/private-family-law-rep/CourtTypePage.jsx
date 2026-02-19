@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import ButtonContainer from "../../components/ButtonContainer";
-import FeeTotal from "../../components/FeeTotal";
 import NavButton from "../../components/NavButton";
 import PageHeading from "../../components/PageHeading";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
-import { useSchemeUIContext } from '../../context/SchemeUIContext';
 
 const CourtTypePage = () => {
   const navigate = useNavigate();
-
-  const { addFee, getFeeTotal } = useSchemeUIContext();
+  const location = useLocation();
+  const title = location.state?.title || "Private Family Law Representation Scheme (PFLRS)";
+  const nextPath = location.state?.nextPath || "/level-of-work-done";
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -49,18 +48,20 @@ const CourtTypePage = () => {
 
   const handleContinue = () => {
     const selectedOption = options.find(option => option.value === selectedRadio)
-    addFee('Court Type Fee', selectedOption.fee)
-    navigate("/level-of-work-done");
+   //addFee('Court Type Fee', selectedOption.fee)
+    navigate(nextPath, {
+          state: {
+            title: title,
+          }
+    });
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
         <PageHeading>
-          Private Family Law Representation Scheme (PFLRS)
+          {title}
         </PageHeading>
-
-        <FeeTotal value={getFeeTotal()} />
 
         <RadioButtonsPanel
           name="courtType"
