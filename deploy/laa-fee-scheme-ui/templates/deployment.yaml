@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "laa-fee-scheme-ui.fullname" . }}
+  labels:
+    {{- include "laa-fee-scheme-ui.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "laa-fee-scheme-ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "laa-fee-scheme-ui.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "laa-fee-scheme-ui.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: SERVICE_NAME
+              value: "{{ .Values.env.SERVICE_NAME }}"
+            - name: SERVICE_PHASE
+              value: "{{ .Values.env.SERVICE_PHASE }}"
+            - name: DEPARTMENT_NAME
+              value: "{{ .Values.env.DEPARTMENT_NAME }}"
+            - name: DEPARTMENT_URL
+              value: "{{ .Values.env.DEPARTMENT_URL }}"
+            - name: CONTACT_EMAIL
+              value: "{{ .Values.env.CONTACT_EMAIL }}"
+            - name: CONTACT_PHONE
+              value: "{{ .Values.env.CONTACT_PHONE }}"
+            - name: SERVICE_URL
+              value: "{{ .Values.env.SERVICE_URL }}"
+            - name: SESSION_SECRET
+              value: "{{ .Values.env.SESSION_SECRET }}"
+            - name: SESSION_NAME
+              value: "{{ .Values.env.SESSION_NAME }}"
+            - name: RATELIMIT_HEADERS_ENABLED
+              value: "{{ .Values.env.RATELIMIT_HEADERS_ENABLED }}"
+            - name: RATELIMIT_STORAGE_URI
+              value: "{{ .Values.env.RATELIMIT_STORAGE_URI }}"
+            - name: RATE_LIMIT_MAX
+              value: "{{ .Values.env.RATE_LIMIT_MAX }}"
+            - name: RATE_WINDOW_MS
+              value: "{{ .Values.env.RATE_WINDOW_MS }}"
+            - name: API_URL
+              value: "{{ .Values.env.API_URL }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
+            - name: AUTH_ENABLED
+              value: "{{ .Values.env.AUTH_ENABLED }}"
+            - name: BASE_URL
+              value: "{{ .Values.env.BASE_URL }}"
+            - name: ISSUER_BASE_URL
+              {{- if kindIs "map" .Values.env.ISSUER_BASE_URL }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.ISSUER_BASE_URL.name }}
+                  key: {{ .Values.env.ISSUER_BASE_URL.key }}
+              {{- else }}
+              value: "{{ .Values.env.ISSUER_BASE_URL }}"
+              {{- end }}
+            - name: CLIENT_ID
+              {{- if kindIs "map" .Values.env.CLIENT_ID }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.CLIENT_ID.name }}
+                  key: {{ .Values.env.CLIENT_ID.key }}
+              {{- else }}
+              value: "{{ .Values.env.CLIENT_ID }}"
+              {{- end }}
+            - name: USE_SSL
+              value: "{{ .Values.env.USE_SSL }}"
+            - name: OIDC_SCOPE
+              value: "{{ .Values.env.OIDC_SCOPE }}"
+            - name: FEE_SCHEME_API_SCOPE
+              {{- if kindIs "map" .Values.env.FEE_SCHEME_API_SCOPE }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.FEE_SCHEME_API_SCOPE.name }}
+                  key: {{ .Values.env.FEE_SCHEME_API_SCOPE.key }}
+              {{- else }}
+              value: "{{ .Values.env.FEE_SCHEME_API_SCOPE }}"
+              {{- end }}
+            - name: OIDC_LOGIN_PATH
+              value: "{{ .Values.env.OIDC_LOGIN_PATH }}"
+            - name: OIDC_CALLBACK_PATH
+              value: "{{ .Values.env.OIDC_CALLBACK_PATH }}"
+            - name: OIDC_LOGOUT_PATH
+              value: "{{ .Values.env.OIDC_LOGOUT_PATH }}"
+            - name: OIDC_CLIENT_SECRET
+              {{- if kindIs "map" .Values.env.OIDC_CLIENT_SECRET }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.OIDC_CLIENT_SECRET.name }}
+                  key: {{ .Values.env.OIDC_CLIENT_SECRET.key }}
+              {{- else }}
+              value: "{{ .Values.env.OIDC_CLIENT_SECRET }}"
+              {{- end }} 
+            - name: REDIS_DISABLED
+              value: "{{ .Values.env.REDIS_DISABLED }}" 
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.REDIS_HOST.name }}
+                  key: {{ .Values.env.REDIS_HOST.key }}    
+            - name: REDIS_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.REDIS_AUTH_TOKEN.name }}
+                  key: {{ .Values.env.REDIS_AUTH_TOKEN.key }}      
+
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
