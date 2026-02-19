@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import ButtonContainer from "../../components/ButtonContainer";
-import FeeTotal from "../../components/FeeTotal";
 import NavButton from "../../components/NavButton";
 import PageHeading from "../../components/PageHeading";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
