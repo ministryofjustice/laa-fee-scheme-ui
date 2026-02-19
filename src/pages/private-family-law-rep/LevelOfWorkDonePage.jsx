@@ -4,7 +4,6 @@ import BackButton from "../../components/BackButton";
 import NavButton from "../../components/NavButton";
 import RadioButtonsPanel from "../../components/RadioButtonsPanel";
 import { useSchemeUIContext } from '../../context/SchemeUIContext';
-import FeeTotal from "../../components/FeeTotal";
 import PageHeading from "../../components/PageHeading";
 
 const LevelOfWorkDonePage = () => {

@@ -372,7 +372,7 @@ const SummaryPane = () => {
                         Total:
                     </strong>
                     <strong className="govuk-body" style={{ color: '#ffffff', fontWeight: 'bold', fontSize: '1.25rem', marginBottom: 0 }}>
-                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount + (formData.courtTypeFee || 0) + (formData.levelOfWorkFee || 0)).toFixed(2)}
+                        £{((formData.calculatedFee || 0) + (formData.totalBoltonFee || 0) + advocatesMeetingAmount + (formData.courtTypeFee || 0)).toFixed(2)}
                     </strong>
                 </div>
             )}

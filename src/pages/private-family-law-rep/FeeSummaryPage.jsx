@@ -273,7 +273,7 @@ const FeeSummaryPage = () => {
                     className="govuk-heading-l"
                     style={{ color: "#ffffff", marginBottom: 0 }}
                   >
-                    {formatCurrency((formData.calculatedFee + (formData.courtTypeFee || 0) + (formData.levelOfWorkFee || 0)))}
+                    {formatCurrency((formData.calculatedFee + (formData.courtTypeFee || 0)))}
                   </strong>
                 </div>
               )}
