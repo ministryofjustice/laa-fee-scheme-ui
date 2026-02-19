@@ -33,7 +33,6 @@ export const SchemeUIProvider = ({ children }) => {
         interimHearingFees: [],
         totalInterimFee: null,
         courtTypeFee: null,
-        levelOfWorkFee: null,
 
         // Bolton Page
         isBoltonApplicable: '',
@@ -44,7 +43,15 @@ export const SchemeUIProvider = ({ children }) => {
         // Advocates Meetings Page
         attendedAdvocatesMeetings: '',
         advocatesMeetings: [],
+
+        // PFLRS Pages
         certificationDate: "",
+        pflrsProceedingsType: "",
+        providerLocation: "",
+        feeType: "",
+        billType: "",
+        courtType: "",
+        levelOfWorkDone: "",
     });
 
     const updateFormData = (field, value) => {
@@ -83,6 +90,12 @@ export const SchemeUIProvider = ({ children }) => {
             attendedAdvocatesMeetings: '',
             advocatesMeetings: [],
             certificationDate: "",
+            pflrsProceedingsType: "",
+            providerLocation: "",
+            feeType: "",
+            billType: "",
+            courtType: "",
+            levelOfWorkDone: "",
         });
     };
 

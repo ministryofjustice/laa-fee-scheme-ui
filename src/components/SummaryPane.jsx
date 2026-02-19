@@ -109,8 +109,10 @@ const SummaryPane = () => {
         (formData.boltonItems && formData.boltonItems.length > 0) ||
         formData.attendedAdvocatesMeetings ||
         (formData.advocatesMeetings && formData.advocatesMeetings.length > 0) ||
-        formData.pflrsProceedingsType || formData.certificationDate ||
-        formData.providerLocation || formData.feeType
+        formData.certificationDate || formData.pflrsProceedingsType ||
+        formData.providerLocation || formData.feeType ||
+        formData.billType || formData.courtType ||
+        formData.levelOfWorkDone;
 
     if (!hasAnyData) {
         return null;
