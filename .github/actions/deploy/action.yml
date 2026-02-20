@@ -66,12 +66,12 @@ runs:
         kube-namespace: ${{ inputs.kube-namespace }}
 
     # NOTE THIS KEEPS FAILING WITH SERVICE ACCOUNT ISSUE
-    # - name: Deploy infrastructure to UAT
+    # - name: Deploy infrastructure to Dev
     #   shell: bash
     #   run: |
-    #     if [ ${{ inputs.app-environment }} == 'uat' ]
+    #     if [ ${{ inputs.app-environment }} == 'dev' ]
     #     then
-    #       kubectl apply --record=false -f ./infrastructure/laa-fee-scheme-ui-uat/
+    #       kubectl apply --record=false -f ./infrastructure/laa-fee-scheme-ui-dev/
     #     fi
 
     - name: Set environment variables
