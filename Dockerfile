@@ -36,5 +36,8 @@ ENV HOME=/app
 # Expose the port the app runs on
 EXPOSE 3000
 
+# Install a simple static file server for serving the built app
+RUN yarn global add serve
+
 # Define the command to run the application
-CMD ["node", "public/app.js"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
