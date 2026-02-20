@@ -86,15 +86,6 @@ spec:
               value: "{{ .Values.env.BASE_URL }}"
             - name: USE_SSL
               value: "{{ .Values.env.USE_SSL }}"
-            - name: FEE_SCHEME_API_SCOPE
-              {{- if kindIs "map" .Values.env.FEE_SCHEME_API_SCOPE }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.env.FEE_SCHEME_API_SCOPE.name }}
-                  key: {{ .Values.env.FEE_SCHEME_API_SCOPE.key }}
-              {{- else }}
-              value: "{{ .Values.env.FEE_SCHEME_API_SCOPE }}"
-              {{- end }}  
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
