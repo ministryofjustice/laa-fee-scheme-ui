@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { SchemeUIContext } from './SchemeUIContextUtils';
+import React, { createContext, useContext, useState } from 'react';
+
+const SchemeUIContext = createContext();
+
+export const useSchemeUIContext = () => {
+    const context = useContext(SchemeUIContext);
+    if (!context) {
+        throw new Error('useSchemeUIContext must be used within SchemeUIProvider');
+    }
+    return context;
+};
 
 export const SchemeUIProvider = ({ children }) => {
     const [formData, setFormData] = useState({
         // Family Advocacy Scheme Page
         aspectOfWork: '',
-        
+
         // Proceeding Types Page
         proceedingType: '',
-        
+
         // Hearing Page
         hearingDate: '',
         hearingType: '',
@@ -18,21 +27,31 @@ export const SchemeUIProvider = ({ children }) => {
         days: '',
         judgeLevel: '',
         courtDirected: '',
-        
+
         // Calculated Fee
         calculatedFee: null,
         interimHearingFees: [],
         totalInterimFee: null,
+        courtTypeFee: null,
 
         // Bolton Page
         isBoltonApplicable: '',
         boltonCategory: '',
         boltonItems: [],
         totalBoltonFee: null,
-        
+
         // Advocates Meetings Page
         attendedAdvocatesMeetings: '',
-        advocatesMeetings: []
+        advocatesMeetings: [],
+
+        // PFLRS Pages
+        certificationDate: "",
+        pflrsProceedingsType: "",
+        providerLocation: "",
+        feeType: "",
+        billType: "",
+        courtType: "",
+        levelOfWorkDone: "",
     });
 
     const updateFormData = (field, value) => {
@@ -69,7 +88,14 @@ export const SchemeUIProvider = ({ children }) => {
             boltonItems: [],
             totalBoltonFee: null,
             attendedAdvocatesMeetings: '',
-            advocatesMeetings: []
+            advocatesMeetings: [],
+            certificationDate: "",
+            pflrsProceedingsType: "",
+            providerLocation: "",
+            feeType: "",
+            billType: "",
+            courtType: "",
+            levelOfWorkDone: "",
         });
     };
 

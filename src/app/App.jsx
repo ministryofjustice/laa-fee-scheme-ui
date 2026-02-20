@@ -1,11 +1,25 @@
-import { BrowserRouter } from 'react-router-dom'
-import AppRoutes from './routes'
+import { BrowserRouter } from "react-router-dom";
+import { SchemeUIProvider } from "../context/SchemeUIContext";
+import AppRoutes from "./routes";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import SummaryPane from "../components/SummaryPane.jsx";
 
-export default function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  )
-}
+    <SchemeUIProvider>
+      <BrowserRouter>
+        <Header />
+        <div style={{ display: "flex", minHeight: "calc(100vh - 170px)" }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <AppRoutes />
+          </div>
+          <SummaryPane />
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </SchemeUIProvider>
+  );
+};
 
+export default App;

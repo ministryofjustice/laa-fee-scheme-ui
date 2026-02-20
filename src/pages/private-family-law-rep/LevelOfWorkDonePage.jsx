@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
-import NavButton from "../components/NavButton";
-import RadioButtonsPanel from "../components/RadioButtonsPanel";
+import BackButton from "../../components/BackButton";
+import NavButton from "../../components/NavButton";
+import RadioButtonsPanel from "../../components/RadioButtonsPanel";
+import { useSchemeUIContext } from '../../context/SchemeUIContext';
+import PageHeading from "../../components/PageHeading";
 
 const LevelOfWorkDonePage = () => {
   const navigate = useNavigate();
+
+  const { updateFormData } = useSchemeUIContext();
 
   const [selectedRadio, setSelectedRadio] = useState("");
 
@@ -17,44 +21,26 @@ const LevelOfWorkDonePage = () => {
     {
       value: "legalRep",
       label: "Legal Representation",
+      fee: 300,
     },
   ];
 
   const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
-  };
-
-  const applyEarlyResolutionSettlementFee = () => {
-    console.log("Apply bolt-on Early Resolution/Settlement Fee");
-  };
-
-  const applyEnforcementProceedingsFee = () => {
-    console.log("Apply bolt-on Enforcement Proceedings Fee");
+    const value = e.target.value;
+    setSelectedRadio(value);
+    updateFormData("levelOfWorkDone", value);
   };
 
   const handleContinue = () => {
-    // if finance and resolution at first app OR
-    // Financial Dispute Resolution (FDR) hearing
-    const isEarlyResolutionSettlement = false;
-    if (isEarlyResolutionSettlement) {
-      applyEarlyResolutionSettlementFee();
-    }
-
-    // if returned to court after final hearing for enforcement proceedings fee
-    const isEnforcementProceeding = false;
-    if (isEnforcementProceeding) {
-      applyEnforcementProceedingsFee();
-    }
-
-    navigate("/calculate-fees");
+    navigate("/fee-summary");
   };
 
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
-        <h1 className="govuk-heading-xl">
+        <PageHeading>
           Private Family Law Representation Scheme (PFLRS)
-        </h1>
+        </PageHeading>
 
         <RadioButtonsPanel
           name="levelOfWork"
