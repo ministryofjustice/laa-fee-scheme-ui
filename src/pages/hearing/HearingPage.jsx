@@ -27,7 +27,7 @@ const Hearing = () => {
         if (!formData.hearingType && proceedingType) {
             updateMultipleFields({ hearingType: proceedingType });
         }
-    }, []);
+    }, [formData.hearingType, proceedingType, updateMultipleFields]);
 
     // Calculate fee for single hearing (interim with 1 proceeding, or final hearing)
     const calculatedFee = useMemo(() => {

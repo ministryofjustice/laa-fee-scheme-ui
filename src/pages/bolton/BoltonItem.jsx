@@ -1,6 +1,7 @@
 import React from 'react';
 
-const BoltonItem = ({ item, index, selectedCategory, onUpdate, onRemove, valueOptions }) => {
+// Removed unused selectedCategory prop
+const BoltonItem = ({ item, index, onUpdate, onRemove, valueOptions }) => {
 
     const handleFieldChange = (field, value) => {
         const updates = { [field]: value };

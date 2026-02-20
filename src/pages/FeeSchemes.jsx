@@ -4,7 +4,7 @@ import '../styles/FeeSchemes.css';
 
 const FeeSchemes = () => {
     const navigate = useNavigate();
-    const [selectedScheme, setSelectedScheme] = useState('');
+    // Removed unused selectedScheme and setSelectedScheme
     const [selectedCardScheme, setSelectedCardScheme] = useState('');
 
     const schemeOptions = [

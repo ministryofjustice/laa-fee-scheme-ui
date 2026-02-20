@@ -10,8 +10,7 @@ const FamilyAdvocacySchemePage = () => {
     // Reset all form data when entering this page
     useEffect(() => {
         resetFormData();
-        setSelectedAspect('');
-    }, []);
+    }, [resetFormData]);
 
     const aspectOptions = [
         { value: 'private-law-finance', label: 'Private Law Finance' },

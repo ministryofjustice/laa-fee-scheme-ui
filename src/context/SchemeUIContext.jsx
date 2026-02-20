@@ -1,14 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-
-const SchemeUIContext = createContext();
-
-export const useSchemeUIContext = () => {
-    const context = useContext(SchemeUIContext);
-    if (!context) {
-        throw new Error('useSchemeUIContext must be used within SchemeUIProvider');
-    }
-    return context;
-};
+import React, { useState } from 'react';
+import { SchemeUIContext } from './SchemeUIContextUtils';
 
 export const SchemeUIProvider = ({ children }) => {
     const [formData, setFormData] = useState({
