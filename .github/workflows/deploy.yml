@@ -92,7 +92,7 @@ jobs:
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
 
-  deploy-dev:
+  Deploy-Dev:
     environment: dev
     runs-on: ubuntu-latest
     needs:
