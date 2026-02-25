@@ -1,28 +1,43 @@
-# ==============================
-# 1️⃣ Build Stage
-# ==============================
-FROM node:20-alpine AS builder
+# Use the official Node.js image as the base image
+FROM node:24.9.0-slim
 
-RUN corepack enable
-
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY package.json yarn.lock .yarnrc.yml ./
+# Copy package.json and yarn.lock to the working directory
+COPY package*.json yarn.lock .yarnrc.yml ./
+
+# Enable Corepack to use the correct Yarn version
+RUN corepack enable
+
+# Install dependencies
 RUN yarn install --immutable
 
-COPY . .
+# Create a non-root user  
+RUN addgroup --system --gid 1001 appuser && \
+    adduser --system --uid 1001 --gid 1001 appuser
+
+# Copy the rest of the application code to the working directory
+# and set ownership to the non-root user
+COPY --chown=1001:1001 . .
+
+# Build the application
 RUN yarn build
 
+# Set ownership of all generated files to the non-root user
+RUN chown -R 1001:1001 /app
 
-# ==============================
-# 2️⃣ Runtime Stage
-# ==============================
-FROM nginx:stable-alpine
+# Switch to the non-root user by ID (not name)
+USER 1001
 
-RUN rm -rf /usr/share/nginx/html/*
+# Set HOME environment variable to fix corepack cache issues
+ENV HOME=/app
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Expose the port the app runs on
+EXPOSE 3000
 
-EXPOSE 80
+# Install a simple static file server for serving the built app
+RUN yarn global add serve
 
-CMD ["nginx", "-g", "daemon off;"]
+# Define the command to run the application
+CMD ["serve", "-s", "dist", "-l", "3000"]
