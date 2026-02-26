@@ -79,7 +79,7 @@ spec:
             - name: API_URL
               value: "{{ .Values.env.API_URL }}"
             - name: NODE_ENV
-              value: "{{ .Values.env.NODE_ENV }}"
+              value: "dev"
             - name: AUTH_ENABLED
               value: "{{ .Values.env.AUTH_ENABLED }}"
             - name: BASE_URL
