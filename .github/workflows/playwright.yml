@@ -61,7 +61,7 @@ jobs:
           RATE_WINDOW_MS: "900000"
       - name: Upload trace artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-traces
           path: |
