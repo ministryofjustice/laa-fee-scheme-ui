@@ -3,10 +3,10 @@ name: Deploy with Helm
 on:
   pull_request:
     branches:
-      - LFSP-349C
+      - main
   push:
     branches:
-      - LFSP-349C
+      - main
   workflow_dispatch:
 
 jobs:
