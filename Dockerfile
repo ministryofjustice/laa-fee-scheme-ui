@@ -24,12 +24,17 @@ RUN yarn build
 
 
 # ---------- Stage 2: Runtime ----------
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged:stable-alpine
 
-RUN rm -rf /usr/share/nginx/html/*
+# Remove default site config
+RUN rm -f /etc/nginx/conf.d/default.conf
 
+# Copy built app
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+# Copy custom nginx config (see below)
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
