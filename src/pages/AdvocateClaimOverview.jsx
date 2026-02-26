@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import SummaryRow from '../components/SummaryRow';
 
 const AdvocateClaimOverview = () => {
     const navigate = useNavigate();
@@ -12,18 +11,28 @@ const AdvocateClaimOverview = () => {
     return (
         <div className="govuk-width-container">
             <main className="govuk-main-wrapper">
-                <h1 className="govuk-heading-l">Advocate Claim Overview</h1>
+                <h1 className="govuk-heading-xl">🏛 Civil Family Claims Portal</h1>
 
-                <dl className="govuk-summary-list">
-                    <SummaryRow label="Client name" value="Jane Doe" />
-                    <SummaryRow label="Certificate number" value="123456789" />
-                    <SummaryRow label="Category" value="Family – Public Law" />
-                    <SummaryRow label="Certificate dates" value="01 Jan 2024 to 31 Dec 2024" />
-                    <SummaryRow label="Advocate" value="John Smith" />
-                    <SummaryRow label="Advocate role" value="Barrister" />
-                    <SummaryRow label="Provider firm" value="Newcastle Solicitors" />
-                </dl>
+                <h2 className="govuk-heading-l">Civil Legal Aid – Family Advocacy & Representation Schemes</h2>
 
+                <h3 className="govuk-heading-m">Welcome</h3>
+                <p className="govuk-body">
+                    This service allows legal aid providers to submit and manage civil family claims under approved
+                    remuneration schemes in England and Wales.
+                </p>
+
+                <p className="govuk-body">
+                    Use this portal to record case details, calculate fees, and submit claims for assessment.
+                </p>
+
+                <h3 className="govuk-heading-s">Who this service is for</h3>
+                <p className="govuk-body">This service is for:</p>
+                <ul className="govuk-list govuk-list--bullet">
+                    <li>Advocates</li>
+                    <li>Solicitors</li>
+                    <li>Barristers</li>
+                    <li>Legal aid providers contracted under civil legal aid</li>
+                </ul>
                 <button 
                     className="govuk-button" 
                     data-module="govuk-button"
