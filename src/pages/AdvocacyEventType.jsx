@@ -5,7 +5,7 @@ import { useSchemeUIContext } from '../context/SchemeUIContext';
 const ProceedingTypes = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { updateFormData, updateMultipleFields } = useSchemeUIContext();
+    const { updateMultipleFields } = useSchemeUIContext();
     const [proceedingType, setProceedingType] = useState('');
     
     const aspectOfWork = location.state?.aspectOfWork || 'Unknown';

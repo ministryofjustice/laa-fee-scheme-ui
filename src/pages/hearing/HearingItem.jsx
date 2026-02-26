@@ -125,5 +125,6 @@ const HearingItem = ({ hearing, index, onUpdate, calculatedFee }) => {
     );
 };
 
-export { durationBandOptions, judgeLevelOptions };
 export default HearingItem;
+
+export { durationBandOptions,  judgeLevelOptions};
