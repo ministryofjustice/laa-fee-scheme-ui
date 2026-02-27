@@ -84,8 +84,8 @@ const AdvocatesMeetingsPage = () => {
         //     body: JSON.stringify(payload)
         // });
         
-        // Navigate to next page
-        // navigate('/next-page');
+        // Navigate to bolt-on page
+        navigate('/bolton');
     };
 
     const isFormValid = () => {
