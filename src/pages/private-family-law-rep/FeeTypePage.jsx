@@ -42,18 +42,10 @@ const PrivateFamilyLawRepresentationFeeTypePage = () => {
   };
 
   const handleContinue = () => {
-    const selectedOption = options.find(
-      (option) => option.value === selectedRadio,
-    );
-
-    const { value: selectedValue, feeType } = selectedOption;
-
-    setFeeType(feeType);
-
-    if (selectedValue === "profitCostsBelow") {
+    if (selectedRadio === "profitCostsBelow") {
       navigate("/bill-type");
     } else {
-      navigate("/calculate-fees");
+      navigate('/fee-summary');
     }
   };
 
