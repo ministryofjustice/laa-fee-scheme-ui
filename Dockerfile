@@ -19,6 +19,12 @@ RUN yarn install --immutable
 # Copy rest of source code
 COPY . .
 
+# Build-time env vars for API configuration (pass via --build-arg)
+ARG VITE_API_URL
+ARG VITE_API_TOKEN
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_TOKEN=$VITE_API_TOKEN
+
 # Build Vite app
 RUN yarn build
 
