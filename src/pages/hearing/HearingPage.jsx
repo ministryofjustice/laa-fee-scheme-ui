@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSchemeUIContext } from '../../context/SchemeUIContext';
 import { PublicLawFeeService } from '../../services/advocacySchemeService';
+import { calculateAdvocacyFee } from '../../services/feeRequestService';
 import HearingItem, { durationBandOptions, judgeLevelOptions } from './HearingItem';
 
 const Hearing = () => {
@@ -29,32 +30,104 @@ const Hearing = () => {
         }
     }, [formData.hearingType, proceedingType, updateMultipleFields]);
 
-    // Calculate fee for single hearing (interim with 1 proceeding, or final hearing)
-    const calculatedFee = useMemo(() => {
-        if (hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && durationBand && judgeLevel) {
-            return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, durationBand);
+    // --- API-fetched fee state (replaces hardcoded useMemo calculations below) ---
+    const [calculatedFee, setCalculatedFee] = useState(null);
+    const [feeLoading, setFeeLoading] = useState(false);
+    const [feeError, setFeeError] = useState(null);
+    const [interimHearingFees, setInterimHearingFees] = useState([]);
+    const [totalInterimFee, setTotalInterimFee] = useState(null);
+
+    // Fetch single hearing fee from API when inputs change
+    useEffect(() => {
+        const shouldFetch =
+            (hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && durationBand && judgeLevel) ||
+            (hearingType === 'FINAL_HEARING' && days && judgeLevel);
+
+        if (!shouldFetch || !aspectOfWork) {
+            setCalculatedFee(null);
+            return;
         }
-        if (hearingType === 'FINAL_HEARING' && days && judgeLevel) {
-            return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, null, days);
-        }
-        return null;
+
+        let cancelled = false;
+        setFeeLoading(true);
+        setFeeError(null);
+
+        calculateAdvocacyFee({ aspectOfWork, judgeLevel, hearingType, durationBand })
+            .then(data => {
+                if (!cancelled) {
+                    setCalculatedFee(data.amount);
+                    setFeeLoading(false);
+                }
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setFeeError('Unable to calculate fee. Please try again.');
+                    setFeeLoading(false);
+                }
+            });
+
+        return () => { cancelled = true; };
     }, [aspectOfWork, hearingType, durationBand, judgeLevel, days, numberOfInterimProceedings]);
 
-    // Calculate fees for each interim hearing when multiple proceedings
-    const interimHearingFees = useMemo(() => {
-        if (hearingType !== 'INTERIM_HEARING' || parseInt(numberOfInterimProceedings) <= 1) return [];
-        return interimHearings.map(h => {
-            if (h.durationBand && h.judgeLevel) {
-                return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, h.judgeLevel, 'INTERIM_HEARING', h.durationBand);
-            }
-            return null;
-        });
+    // Fetch fees for multiple interim hearings from API when inputs change
+    useEffect(() => {
+        if (hearingType !== 'INTERIM_HEARING' || parseInt(numberOfInterimProceedings) <= 1) {
+            setInterimHearingFees([]);
+            setTotalInterimFee(null);
+            return;
+        }
+
+        const promises = interimHearings.map(h =>
+            h.durationBand && h.judgeLevel
+                ? calculateAdvocacyFee({ aspectOfWork, judgeLevel: h.judgeLevel, hearingType: 'INTERIM_HEARING', durationBand: h.durationBand })
+                : Promise.resolve(null)
+        );
+
+        let cancelled = false;
+        Promise.all(promises)
+            .then(results => {
+                if (!cancelled) {
+                    const fees = results.map(r => (r ? r.amount : null));
+                    setInterimHearingFees(fees);
+                    const allValid = fees.length > 0 && fees.every(f => f !== null);
+                    setTotalInterimFee(allValid ? parseFloat(fees.reduce((sum, f) => sum + f, 0).toFixed(2)) : null);
+                }
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setInterimHearingFees(interimHearings.map(() => null));
+                    setTotalInterimFee(null);
+                }
+            });
+
+        return () => { cancelled = true; };
     }, [aspectOfWork, hearingType, numberOfInterimProceedings, interimHearings]);
 
-    const totalInterimFee = useMemo(() => {
-        if (interimHearingFees.length === 0 || interimHearingFees.some(f => f === null)) return null;
-        return parseFloat(interimHearingFees.reduce((sum, f) => sum + f, 0).toFixed(2));
-    }, [interimHearingFees]);
+    // --- Hardcoded local fee calculations (commented out — replaced by API calls above) ---
+    // const calculatedFee = useMemo(() => {
+    //     if (hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && durationBand && judgeLevel) {
+    //         return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, durationBand);
+    //     }
+    //     if (hearingType === 'FINAL_HEARING' && days && judgeLevel) {
+    //         return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, judgeLevel, hearingType, null, days);
+    //     }
+    //     return null;
+    // }, [aspectOfWork, hearingType, durationBand, judgeLevel, days, numberOfInterimProceedings]);
+    //
+    // const interimHearingFees = useMemo(() => {
+    //     if (hearingType !== 'INTERIM_HEARING' || parseInt(numberOfInterimProceedings) <= 1) return [];
+    //     return interimHearings.map(h => {
+    //         if (h.durationBand && h.judgeLevel) {
+    //             return PublicLawFeeService.calculateHearingFeeFromUI(aspectOfWork, h.judgeLevel, 'INTERIM_HEARING', h.durationBand);
+    //         }
+    //         return null;
+    //     });
+    // }, [aspectOfWork, hearingType, numberOfInterimProceedings, interimHearings]);
+    //
+    // const totalInterimFee = useMemo(() => {
+    //     if (interimHearingFees.length === 0 || interimHearingFees.some(f => f === null)) return null;
+    //     return parseFloat(interimHearingFees.reduce((sum, f) => sum + f, 0).toFixed(2));
+    // }, [interimHearingFees]);
 
     const hearingTypeOptions = [
         { value: '', label: 'Select hearing type' },
@@ -433,6 +506,12 @@ const Hearing = () => {
                 )}
 
                 {/* Fee Display */}
+                {feeLoading && (
+                    <p className="govuk-body" style={{ color: '#505a5f' }}>Calculating fee…</p>
+                )}
+                {feeError && (
+                    <p className="govuk-error-message">{feeError}</p>
+                )}
                 {calculatedFee !== null && hearingType === 'INTERIM_HEARING' && numberOfInterimProceedings === '1' && (
                     <div className="govuk-inset-text" style={{ borderLeftColor: '#1d70b8' }}>
                         <h2 className="govuk-heading-s" style={{ marginBottom: '5px' }}>Calculated Hearing Fee</h2>

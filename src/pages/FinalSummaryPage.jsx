@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSchemeUIContext } from '../context/SchemeUIContext';
+import { submitAdvocacyFeeRequest } from '../services/feeRequestService';
 
 const FinalSummaryPage = () => {
     const navigate = useNavigate();
     const { formData, resetFormData } = useSchemeUIContext();
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
 
     const aspectOfWorkLabels = {
         'private-law-finance': 'Private Law Finance',
@@ -43,10 +46,18 @@ const FinalSummaryPage = () => {
 
     const totalFee = (formData.calculatedFee || 0) + (formData.totalBoltonFee || 0);
 
-    const handleSubmit = () => {
-        console.log('Final submission:', JSON.stringify(formData, null, 2));
-        resetFormData();
-        navigate('/submission-confirmation');
+    const handleSubmit = async () => {
+        setSubmitting(true);
+        setSubmitError(null);
+        try {
+            await submitAdvocacyFeeRequest(formData);
+            resetFormData();
+            navigate('/submission-confirmation');
+        } catch (error) {
+            setSubmitError(error.response?.data?.message || 'Submission failed. Please try again.');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -54,6 +65,17 @@ const FinalSummaryPage = () => {
             <main className="govuk-main-wrapper">
                 <h1 className="govuk-heading-xl">Check your answers</h1>
                 <p className="govuk-body-l">Review the information you have provided before submitting.</p>
+
+                {submitError && (
+                    <div className="govuk-error-summary" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 className="govuk-error-summary__title">There is a problem</h2>
+                            <div className="govuk-error-summary__body">
+                                <p className="govuk-body">{submitError}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Case Details */}
                 <h2 className="govuk-heading-m">Case details</h2>
@@ -300,8 +322,9 @@ const FinalSummaryPage = () => {
                         className="govuk-button"
                         data-module="govuk-button"
                         onClick={handleSubmit}
+                        disabled={submitting}
                     >
-                        Submit
+                        {submitting ? 'Submitting...' : 'Submit'}
                     </button>
                 </div>
             </main>
