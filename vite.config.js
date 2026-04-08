@@ -4,6 +4,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import path from "path";
 
 export default defineConfig({
+  envPrefix: ['VITE_', 'CERT_FEE_SCHEME_'],
   plugins: [react(), viteStaticCopy({
   targets: [
     {
